@@ -108,13 +108,13 @@ class RemoteInjectionView:
 
     def exec(self):
         remote_injection_params = {}
-        enum_menu = Menu(self.curwindow, 2, 0, list(self.enum_types.keys()))
+        enum_menu = Menu(self.curwindow, 1, 0, list(self.enum_types.keys()))
         enumeration_type = self.render_selection(enum_menu, "Select Process/Thread Enumeration Techinque")
         remote_injection_params["process_enum_type"] = enumeration_type
         
         if "callback_function" in self.enum_types[enumeration_type]:
             remote_injection_params.update(self.enum_types[enumeration_type]["callback_function"]())
-            type_menu = Menu(self.curwindow, 2, 0, list(self.injection_types.keys()))
+            type_menu = Menu(self.curwindow, 1, 0, list(self.injection_types.keys()))
             remote_injection_params["injection_type"] = self.render_selection(type_menu, "Select Injection Type")
             remote_injection_params["remote_injection_type_header_file"] = self.injection_types[remote_injection_params["injection_type"]]["header_file"]
 
@@ -172,7 +172,30 @@ class InjectionTechniqueView:
         
         return injection_params
 
+def wait_for_enter(stdscr: window):
+    ch = stdscr.getch()
+    while ch not in [10, 113]: # ENTER or q
+        ch = stdscr.getch()
+    
+    if ch == 113:
+        exit(0)
+
 def main(stdscr: window):
+    stdscr.border()
+    # Begin banner
+    stdscr.addstr(1, 2, "  _________             .__  .__ __________               __    ")
+    stdscr.addstr(2, 2, " /   _____/_____   ____ |  | |  |\\______   \\ ____   ____ |  | __")
+    stdscr.addstr(3, 2, " \\_____  \\\\____ \\_/ __ \\|  | |  | |    |  _//  _ \\ /  _ \\|  |/ /")
+    stdscr.addstr(4, 2, " /        \\  |_> >  ___/|  |_|  |_|    |   (  <_> |  <_> )    < ")
+    stdscr.addstr(5, 2, "/_______  /   __/ \\___  >____/____/______  /\\____/ \\____/|__|_ \\")
+    stdscr.addstr(6, 2, "        \\/|__|        \\/                 \\/                   \\/")
+    stdscr.addstr(8, 2, "Welcome to SpellBook. The magically amazing Loader generator.")
+    stdscr.addstr(9, 2, "Press Enter to begin or Q to exit...")
+    # End banner
+    stdscr.refresh()
+
+    wait_for_enter(stdscr)
+    stdscr.clear()
     stdscr.border()
     stdscr.refresh()
 
