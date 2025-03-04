@@ -1,4 +1,4 @@
 *.exe
 *.cpp
-.vscode/
-.vs/
+*.vscode/
+*.vs/
