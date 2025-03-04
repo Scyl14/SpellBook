@@ -7,7 +7,7 @@ DWORD WINAPI DummyFunction(LPVOID lpParam) {
 	return 0;
 }
 
-BOOL PayloadExecute(IN PBYTE pPayload, IN SIZE_T sPayloadSize) {
+BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sPayloadSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
 	
 	PVOID    pAddress         = NULL;
 	DWORD    dwOldProtection  = NULL;

