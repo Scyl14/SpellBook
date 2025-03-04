@@ -14,7 +14,7 @@ def build (Enumeration, ProcessName, Loader, Url):
     
     if Enumeration != "null":
         f.write(f"""\n
-#include "Libraires/{Enumeration}"
+#include "Libraries/{Enumeration}"
 """)
     else:
         pass
@@ -147,14 +147,17 @@ def main():
         exit()
     
     ApiMode = input("""\nSelect API Hashing Mode:
-    1. No Hashing
-    2. Hashing (Rotr32)
+    1. Plain IAT
+    2. IAT Hiding (No Hashing)
+    3. Hashing (Rotr32)
 
     >> """)
     if ApiMode == "1":
-        ApiMode = "ApiNoHash.h"
+        ApiMode = "ApiPlainIat.h"
     elif ApiMode == "2":
-        ApiMode = "ApiCtHash.h"
+        ApiMode = "ApiNoHash.h"
+    elif ApiMode == "3":
+        ApiMode =  "ApiCtHash.h"
     
     change_header_file(Enumeration, Loader, ApiMode)
 

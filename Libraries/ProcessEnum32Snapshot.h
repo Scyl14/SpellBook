@@ -24,7 +24,7 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 			wcUpperCaseProcName[i] = szProcessName[i];
 	}
 
-	if ((hSnapShot = pCreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL)) == INVALID_HANDLE_VALUE) {
+	if ((hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL)) == INVALID_HANDLE_VALUE) {
 		printf("[!] CreateToolhelp32Snapshot Failed With Error: %d \n", GetLastError());
 		return FALSE;
 	}
