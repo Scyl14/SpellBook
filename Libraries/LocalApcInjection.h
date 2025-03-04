@@ -46,6 +46,6 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T s
         return FALSE;
     }
 
-
+    WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }

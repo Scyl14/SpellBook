@@ -46,7 +46,3 @@ extern fnWriteProcessMemory pWriteProcessMemory = (fnWriteProcessMemory)GetProcA
 //OpenProcess
 typedef HANDLE (WINAPI* fnOpenProcess)(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
 extern fnOpenProcess pOpenProcess = (fnOpenProcess)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "OpenProcess");
-
-//CreateToolhelp32Snapshot
-typedef HANDLE (WINAPI* fnCreateToolhelp32Snapshot)(DWORD dwFlags, DWORD th32ProcessID);
-extern fnCreateToolhelp32Snapshot pCreateToolhelp32Snapshot = (fnCreateToolhelp32Snapshot)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "CreateToolhelp32Snapshot");

