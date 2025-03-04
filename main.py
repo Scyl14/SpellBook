@@ -65,7 +65,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    os.system(f"C:\\msys64\\mingw64\\bin\\g++ -O2 -w -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
+    os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
