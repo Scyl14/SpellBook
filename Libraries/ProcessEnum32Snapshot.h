@@ -1,4 +1,5 @@
 #pragma once
+#include "api.h"
 #include <stdio.h>
 #include <Windows.h>
 #include <tlhelp32.h>
@@ -23,7 +24,7 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 			wcUpperCaseProcName[i] = szProcessName[i];
 	}
 
-	if ((hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL)) == INVALID_HANDLE_VALUE) {
+	if ((hSnapShot = pCreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL)) == INVALID_HANDLE_VALUE) {
 		printf("[!] CreateToolhelp32Snapshot Failed With Error: %d \n", GetLastError());
 		return FALSE;
 	}
@@ -53,7 +54,7 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 
 		if (wcscmp(szUprProcName, wcUpperCaseProcName) == 0x00) {
 			if (phProcess)
-				*phProcess	= OpenProcess(PROCESS_ALL_ACCESS, FALSE, ProcEntry.th32ProcessID);
+				*phProcess	= pOpenProcess(PROCESS_ALL_ACCESS, FALSE, ProcEntry.th32ProcessID);
 
 			*pdwProcessID	= ProcEntry.th32ProcessID;
 

