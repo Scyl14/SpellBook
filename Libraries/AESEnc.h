@@ -2,17 +2,18 @@
 #include <stdio.h>
 #include <Windows.h>
 
-unsigned char AesIv[] = { 0xB4, 0x2C, 0x3D, 0x4E, 0x5F, 0x6A, 0x7B, 0x8C, 0x9D, 0x0E, 0x1F, 0x2A, 0x3B, 0x4C, 0x5D, 0x6E };
+unsigned char pIv[] = {
+    0x00, 0xB8, 0x80, 0x7E, 0xF0, 0x09, 0x65, 0x8B, 0xD6, 0x6E, 0x2D, 0x8B, 0x0C, 0x6A, 0xA2, 0x34 };
 
 BOOL Encrypt(IN PBYTE pRawDataBuffer, IN SIZE_T sRawBufferSize, IN PBYTE pAesKey, IN OPTIONAL SIZE_T sAesKeySize) {
 
-	if (!pRawDataBuffer || !sRawBufferSize || !pAesKey || !AesIv)
+	if (!pRawDataBuffer || !sRawBufferSize || !pAesKey || !pIv)
 		return FALSE;
     
 	pRawDataBuffer;
 	sRawBufferSize;
 	struct AES_ctx AesCtx	= { 0x00 };
-    PBYTE pAesIv = (PBYTE)AesIv;
+    PBYTE pAesIv = (PBYTE)pIv;
 
 	if (sRawBufferSize % 16 != 0x00) {
 
@@ -38,10 +39,10 @@ BOOL Decrypt(IN PBYTE pCipherTextBuffer, IN SIZE_T sCipherTextSize, IN PBYTE pAe
 
 	struct	AES_ctx AesCtx = { 0x00 };
 
-	if (!pCipherTextBuffer || !sCipherTextSize || !pAesKey || !AesIv)
+	if (!pCipherTextBuffer || !sCipherTextSize || !pAesKey || !pIv)
 		return FALSE;
 
-    PBYTE pAesIv = (PBYTE)AesIv;
+    PBYTE pAesIv = (PBYTE)pIv;
 	RtlSecureZeroMemory(&AesCtx, sizeof(AesCtx));
 	AES_init_ctx_iv(&AesCtx, pAesKey, (const uint8_t *)pAesIv);
 	AES_CBC_decrypt_buffer(&AesCtx, pCipherTextBuffer, sCipherTextSize);

@@ -51,7 +51,7 @@ int main()
 
     SIZE_T payloadSize = (SIZE_T)pPayloadSize;
     PaddBuffer(pPayloadAddress, payloadSize, &pPayloadAddress, &payloadSize);
-    pPayloadSize = (DWORD)payloadSize;
+    //pPayloadSize = (DWORD)payloadSize;
 
     {get_keyguard()[0]};
 
