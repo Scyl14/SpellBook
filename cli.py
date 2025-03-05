@@ -60,12 +60,15 @@ def set_remote_loader_type():
     Loader = input("""\nEnter Injection Techinque:
     1. Remote Process Injection - (CreateRemoteThread)
     2. Remote Thread Hijacking
+    3. Early Bird APC Injection 
                        
     >> """)
     if Loader == "1":
         Loader = "RemoteInjection.h"
     if Loader == "2":
         Loader = "RemoteThreadHijacking.h"
+    if Loader == "3":
+        Loader = "EarlyBirdApcInjection.h"
     return Loader
 
 
@@ -88,12 +91,27 @@ def get_process_type():
 
 def set_enum_type():
     Enumeration = input("""\nEnter Process/Thread Enumeration Techinque: 
-    1. Enumeration via Snapshot
-    1. 
+    1. Process Enumeration via Snapshot
+    1. Process Enumeration via NtQuerySystemInformation
 
     >> """)
     if Enumeration == "1":
         Enumeration = "ProcessEnum32Snapshot.h"
+    if Enumeration == "2":
+        Enumeration = "ProcessEnumNtQuery.h"
+    return Enumeration
+
+def set_proc_creation_type():   
+    Enumeration = input("""\nEnter Process Creation Type:
+    1. Create Suspended Process
+    2. Create Debugged Process
+
+    >> """)
+    if Enumeration == "1":
+        Enumeration = "CreateSuspended.h"
+    if Enumeration == "2":
+        Enumeration = "CreateDebugged.h"
+    return Enumeration
 
 def set_api_mode():
     ApiMode = input("""\nSelect API Hashing Mode:

@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <Windows.h>
 
-BOOL PayloadExecute(IN HANDLE hProcess, IN PBYTE pShellcodeAddress, IN SIZE_T sShellcodeSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
+BOOL PayloadExecute(IN HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN PBYTE pShellcodeAddress, IN SIZE_T sShellcodeSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
 
 	PBYTE		pAddress			= NULL;
-	HANDLE		hThread				= NULL;
+	hThread				= NULL;
 	DWORD		dwOldProtection		= 0x00;
 	SIZE_T		sNmbrOfBytesWritten = NULL;
 
@@ -37,6 +37,7 @@ BOOL PayloadExecute(IN HANDLE hProcess, IN PBYTE pShellcodeAddress, IN SIZE_T sS
 	if (phThread)
 		*phThread			= hThread;
 
-	//WaitForSingleObject(hThread, INFINITE);
+	// Just for testing purposes (TO REMOVE)
+	WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }

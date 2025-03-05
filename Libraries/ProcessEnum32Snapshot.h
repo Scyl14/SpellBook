@@ -8,7 +8,7 @@ using namespace std;
 
 #include <tlhelp32.h>
 
-BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTIONAL PHANDLE phProcess) {
+BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTIONAL PHANDLE phProcess, OUT OPTIONAL HANDLE* hThread) {
 
 	PROCESSENTRY32  ProcEntry						= { .dwSize = sizeof(PROCESSENTRY32) };
 	WCHAR			wcUpperCaseProcName[MAX_PATH]	= { 0x00 };
