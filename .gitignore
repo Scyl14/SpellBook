@@ -2,5 +2,6 @@
 *.cpp
 .vscode/*
 .vs/*
-gui.py
-local_payload_fetch.py
+_pychace_/*
+*gui.py
+*local_payload_fetch.py
