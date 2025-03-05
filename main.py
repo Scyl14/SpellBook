@@ -54,7 +54,7 @@ int main()
 
     if Enumeration != "null":
         f.write(f"""\n
-    if(!GetRemoteProcess(szProcessName, &dwProcessID, &hProcess)){{
+    if(!GetRemoteProcess(szProcessName, &dwProcessID, &hProcess, &hThread)){{
         cout << "Failed to find remote process" << endl;
         return 0;
     }}""" ) 

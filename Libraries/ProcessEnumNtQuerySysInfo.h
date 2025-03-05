@@ -5,7 +5,7 @@
 
 typedef NTSTATUS (NTAPI* fnNtQuerySystemInformation)(SYSTEM_INFORMATION_CLASS SystemInformationClass, PVOID SystemInformation, ULONG SystemInformationLength, PULONG ReturnLength);
 
-BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTIONAL PHANDLE phProcess) {
+BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTIONAL PHANDLE phProcess, OUT OPTIONAL HANDLE* hThread) {
 
 	NTSTATUS						STATUS							= 0x00;
 	fnNtQuerySystemInformation		pNtQuerySystemInformation		= NULL;

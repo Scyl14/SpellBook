@@ -58,6 +58,7 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sP
         return FALSE;
     }
 
+	// Just for testing purposes (TO REMOVE)
 	WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }
