@@ -2,3 +2,5 @@
 *.cpp
 .vscode/*
 .vs/*
+gui.py
+local_payload_fetch.py
