@@ -41,7 +41,7 @@ BOOL PayloadExecute(IN HANDLE hProcess, IN HANDLE hThread, IN PBYTE pShellcode, 
 	}
 
  	// updating the next instruction pointer to be equal to our shellcode's address 
-	ThreadCtx.Rip = (DWORD64)*ppAddress; //MAY BE PROBLEMS HERE! 
+	ThreadCtx.Rip = (DWORD64)*ppAddress;
   
 	// setting the new updated thread context
 	if (!SetThreadContext(hThread, &ThreadCtx)) {

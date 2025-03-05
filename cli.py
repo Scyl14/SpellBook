@@ -17,10 +17,7 @@ def set_payload_encryption():
     1. XOR
     2. RC4
     3. AES
-    4. IPv4Fuscation
-    5. MACFuscation
-    6. UUIDFuscation
-    7. Plain (No Encryption)
+    4. Plain (No Encryption)
                                        
     >> """)
 
@@ -30,6 +27,8 @@ def set_payload_encryption():
         PayloadEncryption = "XOR.h"
     elif PayloadEncryption == "2":
         PayloadEncryption = "RC4.h"
+    elif PayloadEncryption == "3":
+        PayloadEncryption = "AESEnc.h"
 
     return PayloadEncryption
 

