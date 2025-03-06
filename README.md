@@ -20,7 +20,7 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 
     ```sh
     git clone https://github.com/yourusername/spellbook.git
-    cd spellbook
+    cd spellbooks
     ```
 ### Usage
 
@@ -31,5 +31,5 @@ python3 main.py
 ### TODO
 
 - New GUI Work in Progress
-- Make AES work
+- Reimplement Encryption Algorythm in Python 
 - Add new techniques
