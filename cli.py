@@ -56,11 +56,11 @@ def set_local_loader_type():
 
     >> """)
     if Loader == "1":
-        Loader = "LocalInjection.h"
+        Loader = "LocalExecutionSpells/LocalInjection.h"
     if Loader == "2":
-        Loader = "LocalThreadHijacking.h"
+        Loader = "LocalExecutionSpells/LocalThreadHijacking.h"
     if Loader == "3":
-        Loader = "LocalApcInjection.h"
+        Loader = "LocalExecutionSpells/LocalApcInjection.h"
     return Loader
 
 def set_remote_loader_type():
@@ -71,11 +71,11 @@ def set_remote_loader_type():
                        
     >> """)
     if Loader == "1":
-        Loader = "RemoteInjection.h"
+        Loader = "RemoteExecutionSpells/RemoteInjection.h"
     if Loader == "2":
-        Loader = "RemoteThreadHijacking.h"
+        Loader = "RemoteExecutionSpells/RemoteThreadHijacking.h"
     if Loader == "3":
-        Loader = "EarlyBirdApcInjection.h"
+        Loader = "RemoteExecutionSpells/EarlyBirdApcInjection.h"
     return Loader
 
 
@@ -103,9 +103,9 @@ def set_enum_type():
 
     >> """)
     if Enumeration == "1":
-        Enumeration = "ProcessEnum32Snapshot.h"
+        Enumeration = "EnumerationSpells/ProcessEnum32Snapshot.h"
     if Enumeration == "2":
-        Enumeration = "ProcessEnumNtQuery.h"
+        Enumeration = "EnumerationSpells/ProcessEnumNtQuery.h"
     return Enumeration
 
 def set_proc_creation_type():   
@@ -115,9 +115,9 @@ def set_proc_creation_type():
 
     >> """)
     if Enumeration == "1":
-        Enumeration = "CreateSuspended.h"
+        Enumeration = "CreationSpells/CreateSuspended.h"
     if Enumeration == "2":
-        Enumeration = "CreateDebugged.h"
+        Enumeration = "CreationSpells/CreateDebugged.h"
     return Enumeration
 
 def set_api_mode():
@@ -128,9 +128,9 @@ def set_api_mode():
 
     >> """)
     if ApiMode == "1":
-        ApiMode = "ApiPlainIat.h"
+        ApiMode = "UtilitySpells/ApiPlainIat.h"
     elif ApiMode == "2":
-        ApiMode = "ApiNoHash.h"
+        ApiMode = "UtilitySpells/ApiNoHash.h"
     elif ApiMode == "3":
-        ApiMode =  "ApiCtHash.h"
+        ApiMode =  "UtilitySpells/ApiCtHash.h"
     return ApiMode

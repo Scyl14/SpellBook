@@ -16,7 +16,7 @@ VOID Decrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE pb
 	}
 }
 
-VOID Encrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE pbKey, IN OPTIONAL SIZE_T sKeySize) {
+VOID Encrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE pbKey, IN OPTIONAL SIZE_T sKeySize, OUT OPTIONAL PBYTE* ppCipherTextBuffer, OUT OPTIONAL SIZE_T* psCipherTextSize) {
 
 	for (SIZE_T i = 0x00, j = 0x00; i < sShellcodeSize; i++, j++) {
 

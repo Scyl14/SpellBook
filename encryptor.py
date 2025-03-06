@@ -29,8 +29,8 @@ def build_encryptor (Encryption, Payload):
 #include <string> 
 #include <Windows.h>
 #include <stdio.h>
-#include "Libraries/{Encryption}"
-#include "Libraries/Padding.h"
+#include "Spells/EncryptionSpells/{Encryption}"
+#include "Spells/EncryptionSpells/Padding.h"
 
 FILE create_ecrypted_binary_file(PBYTE pPayloadAddress, DWORD pPayloadSize)
 {{
@@ -43,14 +43,15 @@ FILE create_ecrypted_binary_file(PBYTE pPayloadAddress, DWORD pPayloadSize)
 int main()
 {{
     PBYTE pPayloadAddress;
-    DWORD pPayloadSize;      
+    SIZE_T pPayloadSize;  
+
     {Payload}
 
     pPayloadSize = sizeof(Data_RawData);
     pPayloadAddress = Data_RawData;
 
-    SIZE_T payloadSize = (SIZE_T)pPayloadSize;
-    PaddBuffer(pPayloadAddress, payloadSize, &pPayloadAddress, &payloadSize);
+    //SIZE_T payloadSize = (SIZE_T)pPayloadSize;
+    PaddBuffer(pPayloadAddress, pPayloadSize, &pPayloadAddress, &pPayloadSize);
     //pPayloadSize = (DWORD)payloadSize;
 
     {get_keyguard()[0]};
@@ -58,7 +59,8 @@ int main()
     size_t sKeySize = sizeof(OriginalKey);
     PBYTE pbKey = (PBYTE)OriginalKey;
 
-    Encrypt(pPayloadAddress, pPayloadSize, pbKey, sKeySize);
+    Encrypt(pPayloadAddress, pPayloadSize, pbKey, sKeySize, &pPayloadAddress, &pPayloadSize);
+
     create_ecrypted_binary_file(pPayloadAddress, pPayloadSize);
             
     return 0;

