@@ -1,5 +1,3 @@
-*.exe
-*.cpp
 .vscode/*
 .vs/*
 *_pycache_/*
