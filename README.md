@@ -22,7 +22,7 @@ SpellBook is a versatile and modular loader building framework designed for vari
     ```
 ### Usage
 
-    ```python3
+    ```
     python3 main.py
     ```
 
