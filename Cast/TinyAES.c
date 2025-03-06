@@ -1,5 +1,5 @@
 #include <string.h> 
-#include "Spells/EncryptionSpells/TinyAES.h"
+#include "../Spells/EncryptionSpells/TinyAES.h"
 
 #define Nb 4
 #define Nk 8
