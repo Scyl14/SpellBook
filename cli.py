@@ -16,7 +16,7 @@ def set_payload_encryption():
     PayloadEncryption = input("""\nSet Payload  Obfuscation/Encryption:
     1. XOR
     2. RC4
-    3. AES (Not working (sad))
+    3. AES
     4. Plain (No Encryption)
                                        
     >> """)

