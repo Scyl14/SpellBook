@@ -182,13 +182,13 @@ def main():
 
     Path = input(f"""\nPath for the final build (Default .\\Build):
 
->> """)
+    >> """)
     if Path == "":
         Path = ".\\Build"
     
     Name = input(f"""\nFinaly the spell name (Default FireBall.exe):
     
->> """)
+    >> """)
     if Name == "":
         Name = "FireBall"
 
