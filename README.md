@@ -17,6 +17,7 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 ### Installation
 
 1. Clone the repository:
+
     ```sh
     git clone https://github.com/yourusername/spellbook.git
     cd spellbook
