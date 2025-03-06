@@ -180,13 +180,13 @@ def main():
 
     change_header_file(Enumeration, Loader, ApiMode)
 
-    Path = input(f"""Path for the final build (Default ./Build):
+    Path = input(f"""\nPath for the final build (Default .\\Build):
 
 >> """)
     if Path == "":
-        Path = "./Build"
+        Path = ".\\Build"
     
-    Name = input(f"""Finaly the spell name (Default FireBall.exe):
+    Name = input(f"""\nFinaly the spell name (Default FireBall.exe):
     
 >> """)
     if Name == "":
