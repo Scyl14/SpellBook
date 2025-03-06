@@ -1,8 +1,8 @@
 import os
 import time
-from cli import *
-from local_load import *
-from encryptor import *
+from Cast.cli import *
+from Cast.local_load import *
+from Cast.encryptor import *
 
 def build (Encryption, Enumeration, Payload, ProcessName, Loader, Url):
     f = open ("main.cpp", "a")
