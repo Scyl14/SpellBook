@@ -21,9 +21,10 @@ SpellBook is a versatile and modular loader building framework designed for vari
     pip install -r requirements.txt
     ```
 ### Usage
+
     ```sh
     python3 main.py
-    ``` 
+    ```
 
 ### TODO
 
