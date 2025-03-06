@@ -1,6 +1,8 @@
 # SpellBook
 
-SpellBook is a versatile and modular loader building framework designed for various payload injection techniques and encryption methods. It provides a collection of spells (modules) that can be used to create, encrypt, and inject payloads into remote processes. The framework is written in C++ and Python, making it flexible and easy to extend.
+SpellBook is a versatile and modular framework for building loaders, designed to support a wide range of payload injection techniques and encryption methods. It offers a collection of spells (modules), primarily sourced from Maldev Academy ❤️, which can be utilized to create custom loaders. 
+These loaders are ideal for both experimenting with various techniques and for malware reverse engineering training purposes. 
+The framework is developed in C++ and Python, ensuring flexibility and ease of extensibility.
 
 ### Prerequisites
 
