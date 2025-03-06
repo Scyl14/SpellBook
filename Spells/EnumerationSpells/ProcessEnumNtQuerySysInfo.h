@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <Windows.h>
-#include "Structs.h"
+#include "../UtilitySpells/Structs.h"
 
 typedef NTSTATUS (NTAPI* fnNtQuerySystemInformation)(SYSTEM_INFORMATION_CLASS SystemInformationClass, PVOID SystemInformation, ULONG SystemInformationLength, PULONG ReturnLength);
 
