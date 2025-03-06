@@ -10,6 +10,7 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 - Compiler MinGW
 
     1. Chocolatey:
+
         Poweshell (Admin):
 
         ```powershell
@@ -24,7 +25,7 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
     
     OR
 
-    2. MSYS2:
+    2. Install MSYS2:
 
         https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
         

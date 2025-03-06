@@ -101,7 +101,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    return os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o {Path} Build\\main.cpp TinyAES.c -lwininet -lws2_32 -mwindows")
+    return os.system(f"g++ --static -O2 -w -s -o {Path} Build\\main.cpp TinyAES.c -lwininet -lws2_32 -mwindows")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
