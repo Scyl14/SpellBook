@@ -170,7 +170,7 @@ def main():
         if Loader == "RemoteExecutionSpells/RemoteInjection.h":
             Enumeration = set_enum_type()
         elif Loader == "RemoteExecutionSpells/RemoteThreadHijacking.h":
-            Enumeration = "CreateSuspended.h"
+            Enumeration = "CreationSpells/CreateSuspended.h"
         elif Loader == "RemoteExecutionSpells/EarlyBirdApcInjection.h":
             Enumeration = set_proc_creation_type() 
     

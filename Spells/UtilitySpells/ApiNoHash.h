@@ -46,3 +46,7 @@ extern fnWriteProcessMemory pWriteProcessMemory = (fnWriteProcessMemory)GetProcA
 //OpenProcess
 typedef HANDLE (WINAPI* fnOpenProcess)(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
 extern fnOpenProcess pOpenProcess = (fnOpenProcess)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "OpenProcess");
+
+//OpenProcess
+typedef DWORD (WINAPI* fnQueueUserAPC)(PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData);
+extern fnQueueUserAPC pQueueUserAPC = (fnQueueUserAPC)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "QueueUserAPC");

