@@ -1,7 +1,12 @@
 import os
 import re
 
+KeyGuard = None
+
 def get_keyguard():
+    global KeyGuard
+    if KeyGuard:
+        return KeyGuard
     os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -w -o KeyGuard KeyGuard.c -mwindows")
     os.system("KeyGuard.exe 32")
     pattern = re.compile(r'unsigned char (\w+)\[\] = \{[^}]+\};', re.DOTALL)
@@ -18,8 +23,10 @@ def get_keyguard():
         keys[key_name] = key_value
     OriginalKey = keys.get("OriginalKey", "")
     ProtectedKey = keys.get("ProtectedKey", "")
+    print(OriginalKey, ProtectedKey, HintByte) 
     os.remove("KeyGuard.exe")
-    return OriginalKey, ProtectedKey, HintByte
+    KeyGuard = OriginalKey, ProtectedKey, HintByte
+    return KeyGuard
 
 def build_encryptor (Encryption, Payload):
 
