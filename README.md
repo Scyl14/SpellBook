@@ -17,29 +17,29 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 
     Chocolatey:
 
-        Poweshell (Admin):
+    Poweshell (Admin):
 
-        ```powershell
-        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-        ```
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-ObjectSystem.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    ```
 
-        Then:
+    Then:
 
-        ```sh
-        choco install mingw
-        ```
+    ```sh
+    choco install mingw
+    ```
     
     OR
 
     Install MSYS2:
 
-        https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
-        
-        Then in MSYS2:
+    https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
+    
+    Then in MSYS2:
 
-        ```sh
-        pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
-        ```
+    ```sh
+    pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+    ```
 
 - Windows OS (for Windows-specific APIs)
 
