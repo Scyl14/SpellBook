@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <Windows.h>
+#include "api.h"
 
 BOOL GetRemoteProcess( IN LPWSTR lpProcessName,OUT DWORD* dwProcessId,OUT HANDLE* hProcess,OUT HANDLE* hThread) {
 
@@ -28,7 +29,7 @@ BOOL GetRemoteProcess( IN LPWSTR lpProcessName,OUT DWORD* dwProcessId,OUT HANDLE
 	printf("\n\t[i] Running : \"%s\" ... ", lpPath);
 
 	// Creating the process
-	if (!CreateProcessW(
+	if (!pCreateProcessW(
 		NULL,
 		lpPath,
 		NULL,

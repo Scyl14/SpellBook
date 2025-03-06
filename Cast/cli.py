@@ -96,16 +96,23 @@ def get_process_type():
     >> """)
     return GetProcessType
 
+def get_handle_type():
+    GetHandle = input("""\nYou want to create or enumerate the remote process?
+    1. Create
+    2. Enumerate
+
+    >> """)
+
 def set_enum_type():
     Enumeration = input("""\nEnter Process/Thread Enumeration Techinque: 
     1. Process Enumeration via Snapshot
-    1. Process Enumeration via NtQuerySystemInformation
+    2. Process Enumeration via NtQuerySystemInformation
 
     >> """)
     if Enumeration == "1":
         Enumeration = "EnumerationSpells/ProcessEnum32Snapshot.h"
     if Enumeration == "2":
-        Enumeration = "EnumerationSpells/ProcessEnumNtQuery.h"
+        Enumeration = "EnumerationSpells/ProcessEnumNtQuerySysInfo.h"
     return Enumeration
 
 def set_proc_creation_type():   

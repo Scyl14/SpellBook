@@ -1,3 +1,7 @@
+#ifdef NO_WINTERNL
+#define _WINTERNL_
+#endif
+
 #pragma once
 #include <stdio.h>
 #include <Windows.h>
@@ -24,7 +28,7 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 			wcUpperCaseProcName[i] = szProcessName[i];
 	}
 
-	if (!(pNtQuerySystemInformation = (fnNtQuerySystemInformation)GetProcAddress(GetModuleHandle(L"ntdll"), "NtQuerySystemInformation"))) {
+	if (!(pNtQuerySystemInformation = (fnNtQuerySystemInformation)GetProcAddress(GetModuleHandleW(L"ntdll"), "NtQuerySystemInformation"))) {
 		printf("[!] GetProcAddress Failed With Error: %d \n", GetLastError());
 		goto _END_OF_FUNC;
 	}
@@ -61,9 +65,10 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 
 		if (wcscmp(wcUpperCaseProcName, szUprProcName) == 0x00) {
 			if (phProcess)
-				*phProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, (DWORD)pSystemProcInfo->UniqueProcessId);
-
-			*pdwProcessID = (DWORD)pSystemProcInfo->UniqueProcessId;
+			
+			*phProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, (DWORD)(ULONG_PTR)pSystemProcInfo->UniqueProcessId);
+			*pdwProcessID = (DWORD)(ULONG_PTR)pSystemProcInfo->UniqueProcessId;
+			
 
 			break;
 		}

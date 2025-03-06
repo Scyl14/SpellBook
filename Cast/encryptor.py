@@ -7,7 +7,7 @@ def get_keyguard():
     global KeyGuard
     if KeyGuard:
         return KeyGuard
-    os.system(f"g++ --static -w -o Cast\\KeyGuard Cast\\KeyGuard.c -mwindows")
+    os.system(f"g++ --static -w -o Cast\\KeyGuard Cast\\KeyGuard.c ")
     pattern = re.compile(r'unsigned char (\w+)\[\] = \{[^}]+\};', re.DOTALL)
     hint_pattern = re.compile(r'\[\+\] Using "(0x[0-9A-Fa-f]+)" As A Hint Byte')
     keys = {}
@@ -76,7 +76,7 @@ int main()
 """)
     
     f.close()
-    os.system(f"g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c -mwindows")
+    os.system(f"g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c ")
     os.system("Cast\\encryptor.exe")
     os.remove("Cast\\encryptor.cpp")
     os.remove("Cast\\encryptor.exe")

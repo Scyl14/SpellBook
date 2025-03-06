@@ -11,6 +11,7 @@ CTIME_HASHA(VirtualProtectEx);
 CTIME_HASHA(VirtualProtect);
 CTIME_HASHA(CreateThread);
 CTIME_HASHA(CreateRemoteThread);
+CTIME_HASHA(CreateProcessW);
 CTIME_HASHA(GetThreadContext);
 CTIME_HASHA(SetThreadContext);
 CTIME_HASHA(ResumeThread);
@@ -41,6 +42,10 @@ extern fnCreateThread pCreateThread = (fnCreateThread)GetProcAddressH(GetModuleH
 //CreateRemoteThread
 typedef HANDLE (WINAPI* fnCreateRemoteThread)(HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId);
 extern fnCreateRemoteThread pCreateRemoteThread = (fnCreateRemoteThread)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), CreateRemoteThread_Rotr32A);
+
+//CreateProcessW
+typedef BOOL (WINAPI* fnCreateProcessW)(LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation);
+extern fnCreateProcessW pCreateProcessW = (fnCreateProcessW)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), CreateProcessW_Rotr32A);
 
 //GetThreadContext
 typedef BOOL (WINAPI* fnGetThreadContext)(HANDLE hThread, LPCONTEXT lpContext);

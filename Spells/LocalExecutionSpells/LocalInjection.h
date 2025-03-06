@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <Windows.h>
 
-BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN PBYTE pShellcodeAddress, IN SIZE_T sShellcodeSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
+BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN PBYTE pShellcodeAddress, IN SIZE_T sShellcodeSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
 
 	PBYTE		pAddress = NULL;
 	DWORD		dwOldProtection = 0x00;
-	HANDLE		hThread = NULL;
+	hThread = NULL;
 
 	if (!pShellcodeAddress || !sShellcodeSize || !ppInjectionAddress)
 		return FALSE;
