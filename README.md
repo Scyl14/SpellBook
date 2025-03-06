@@ -1,6 +1,6 @@
 # SpellBook
 
-SpellBook is a versatile and modular framework for building loaders, designed to support a wide range of payload injection techniques and encryption methods. It offers a collection of spells (modules), primarily sourced from Maldev Academy ❤️, which can be utilized to create custom loaders. 
+SpellBook is a versatile and modular framework for building loaders, designed to support a wide range of payload injection techniques and encryption methods. It offers a collection of spells (modules), primarily sourced from Maldev Academy ❤️, which can be utilized to create custom loaders.
 These loaders are ideal for both experimenting with various techniques and for malware reverse engineering training purposes. 
 The framework is developed in C++ and Python, ensuring flexibility and ease of extensibility.
 
@@ -48,8 +48,8 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/yourusername/spellbook.git
-    cd spellbooks
+    https://github.com/Scyl14/SpellBook.git
+    cd SpellBook
     ```
 ### Usage
 
