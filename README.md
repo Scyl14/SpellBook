@@ -32,3 +32,4 @@ python3 main.py
 
 - New GUI Work in Progress
 - Make AES work
+- Add new techniques
