@@ -59,6 +59,7 @@ python3 main.py
 
 ### TODO
 
-- New GUI Work in Progress
-- Reimplement Encryption Algorythm in Python 
+- Do some string/url ofuscation
+- New GUI work in progress
+- Reimplement encryption algorythm in python 
 - Add new techniques

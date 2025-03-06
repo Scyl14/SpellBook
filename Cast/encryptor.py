@@ -87,5 +87,3 @@ def read_encrypted_payload():
         content = file.read()
         payload = "unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), content)) + "};"
         return payload
-    
-
