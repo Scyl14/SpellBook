@@ -21,11 +21,6 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
     git clone https://github.com/yourusername/spellbook.git
     cd spellbook
     ```
-
-2. Install the required Python packages:
-    ```sh
-    pip install -r requirements.txt
-    ```
 ### Usage
 
 ```sh 
