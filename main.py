@@ -181,9 +181,9 @@ def main():
     change_header_file(Enumeration, Loader, ApiMode)
 
     if not build(Encryption, Enumeration, Payload, ProcessName, Loader, Url):
-        print(f"\nPayload Built Successfully!\nHave Fun! :)")
+        print(f"\nLoader Built Successfully!\nHave Fun! :)")
     else:
-        print(f"\nFailed to build payload :(")
+        print(f"\nFailed to build loader :(")
     
     restore_header_file(Enumeration, Loader, ApiMode)
     if Payload_Location == "1":

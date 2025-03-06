@@ -14,16 +14,18 @@ def get_keyguard():
     keys = {}
     HintByte = ""
     stdout_text = os.popen("KeyGuard.exe 32").read()
+    
     hint_match = hint_pattern.search(stdout_text)
     if hint_match:
         HintByte = hint_match.group(1)
+
     for match in pattern.finditer(stdout_text):
         key_name = match.group(1)
         key_value = match.group(0)  
         keys[key_name] = key_value
+
     OriginalKey = keys.get("OriginalKey", "")
     ProtectedKey = keys.get("ProtectedKey", "")
-    print(OriginalKey, ProtectedKey, HintByte) 
     os.remove("KeyGuard.exe")
     KeyGuard = OriginalKey, ProtectedKey, HintByte
     return KeyGuard
