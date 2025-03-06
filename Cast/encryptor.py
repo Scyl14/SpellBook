@@ -12,7 +12,7 @@ def get_keyguard():
     hint_pattern = re.compile(r'\[\+\] Using "(0x[0-9A-Fa-f]+)" As A Hint Byte')
     keys = {}
     HintByte = ""
-    stdout_text = os.popen("Cast\\KeyGuard.exe 32").read()
+    stdout_text = os.popen(".\\Cast\\KeyGuard.exe 32").read()
 
     hint_match = hint_pattern.search(stdout_text)
     if hint_match:
@@ -25,7 +25,7 @@ def get_keyguard():
 
     OriginalKey = keys.get("OriginalKey", "")
     ProtectedKey = keys.get("ProtectedKey", "")
-    os.remove("Cast\\KeyGuard.exe")
+    os.remove(".\\Cast\\KeyGuard.exe")
     KeyGuard = OriginalKey, ProtectedKey, HintByte
     return KeyGuard
 
@@ -77,9 +77,9 @@ int main()
     
     f.close()
     os.system(f"C:\\msys64\\mingw64\\bin\\g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c -mwindows")
-    os.system("Cast\\encryptor.exe")
-    os.remove("Cast\\encryptor.cpp")
-    os.remove("Cast\\encryptor.exe")
+    os.system(".\\Cast\\encryptor.exe")
+    os.remove(".\\Cast\\encryptor.cpp")
+    os.remove(".\\Cast\\encryptor.exe")
     return
 
 def read_encrypted_payload():
