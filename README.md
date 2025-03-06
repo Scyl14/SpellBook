@@ -7,7 +7,8 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 ### Prerequisites
 
 - Python 3.7+
-- C++ Compiler (g++)
+- Compiler MinGW
+
     ```sh
     winget install MinGW.MinGW
     ```
