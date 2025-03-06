@@ -9,9 +9,9 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 - Python 3.7+
 - Compiler MinGW
 
-    1. https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
-    2. Then in MSYS:
-    
+    - https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
+    - Then in MSYS:
+
         ```sh
         pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
         ```
