@@ -48,7 +48,7 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 1. Clone the repository:
 
     ```sh
-    https://github.com/Scyl14/SpellBook.git
+    gti clone https://github.com/Scyl14/SpellBook.git
     cd SpellBook
     ```
 ### Usage
