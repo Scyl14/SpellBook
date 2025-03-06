@@ -30,4 +30,5 @@ python3 main.py
 
 ### TODO
 
-    New GUI Work in Progress
+- New GUI Work in Progress
+- Make AES work
