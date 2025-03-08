@@ -5,11 +5,15 @@
 #pragma once
 #include <stdio.h>
 #include <Windows.h>
+//#include <winternl.h>
+#include "api.h"
 #include "../UtilitySpells/Structs.h"
 
 typedef NTSTATUS (NTAPI* fnNtQuerySystemInformation)(SYSTEM_INFORMATION_CLASS SystemInformationClass, PVOID SystemInformation, ULONG SystemInformationLength, PULONG ReturnLength);
 
 BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTIONAL PHANDLE phProcess, OUT OPTIONAL HANDLE* hThread) {
+
+	GetTickCount();
 
 	NTSTATUS						STATUS							= 0x00;
 	fnNtQuerySystemInformation		pNtQuerySystemInformation		= NULL;
@@ -33,21 +37,21 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 		goto _END_OF_FUNC;
 	}
 
-	if ((STATUS = pNtQuerySystemInformation(SystemProcessInformation, NULL, NULL, &uArrayLength)) != STATUS_SUCCESS && STATUS != STATUS_INFO_LENGTH_MISMATCH) {
-		printf("[!] NtQuerySystemInformation Failed With Error: 0x%0.8X \n", STATUS);
-		goto _END_OF_FUNC;
-	}
+	STATUS = pNtQuerySystemInformation(SystemProcessInformation, NULL, NULL, &uArrayLength);
 
 	if (!(pTmpPntrVar = (PBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, uArrayLength))) {
-		pSystemProcInfo = (PSYSTEM_PROCESS_INFORMATION)pTmpPntrVar;
 		printf("[!] HeapAlloc Failed With Error: 0x%0.8X \n", STATUS);
 		goto _END_OF_FUNC;
 	}
 
-	if (!NT_SUCCESS((STATUS = pNtQuerySystemInformation(SystemProcessInformation, pSystemProcInfo, uArrayLength, NULL)))) {
+	if (!NT_SUCCESS((STATUS = pNtQuerySystemInformation(SystemProcessInformation, pTmpPntrVar, uArrayLength, NULL)))) {
 		printf("[!] NtQuerySystemInformation Failed With Error: 0x%0.8X \n", STATUS);
 		goto _END_OF_FUNC;
 	}
+
+	pSystemProcInfo = (PSYSTEM_PROCESS_INFORMATION)pTmpPntrVar;
+
+	GetTickCount();
 
 	while (pSystemProcInfo->NextEntryOffset) {
 
@@ -63,15 +67,19 @@ BOOL GetRemoteProcess(IN LPWSTR szProcessName, OUT PDWORD pdwProcessID, OUT OPTI
 				szUprProcName[i] = pSystemProcInfo->ImageName.Buffer[i];
 		}
 
+		GetTickCount();
+
 		if (wcscmp(wcUpperCaseProcName, szUprProcName) == 0x00) {
 			if (phProcess)
+				*phProcess = pOpenProcess(PROCESS_ALL_ACCESS, FALSE, (DWORD64)pSystemProcInfo->UniqueProcessId);
 			
-			*phProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, (DWORD)(ULONG_PTR)pSystemProcInfo->UniqueProcessId);
-			*pdwProcessID = (DWORD)(ULONG_PTR)pSystemProcInfo->UniqueProcessId;
+			*pdwProcessID = (DWORD64)pSystemProcInfo->UniqueProcessId;
 			
 
 			break;
 		}
+
+		GetTickCount();
 
 _NEXT_ELEMENT:
 		pSystemProcInfo = (PSYSTEM_PROCESS_INFORMATION)((ULONG_PTR)pSystemProcInfo + pSystemProcInfo->NextEntryOffset);

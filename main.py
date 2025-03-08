@@ -101,8 +101,8 @@ int main()
 
     f.close()
     time.sleep(2)
-    return os.system(f"g++ --static -DNO_WINTERNL -O2 -w -s -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet")
-    #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return os.system(f"g++ --static -O2 -w -s -DNO_WINTERNL -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
+    #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-DNO_WINTERNL', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 
 def change_header_file(Enumeration, Loader, ApiMode):
