@@ -56,6 +56,10 @@ The framework is developed in C++ and Python, ensuring flexibility and ease of e
 ```sh 
 python3 main.py
 ```
+### NOTE
+
+Defender real time protecion should be turned off during the building process.
+Or the project folder should be whitelisted
 
 ### TODO
 
