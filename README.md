@@ -7,11 +7,11 @@ This framework is ideal for experimenting with different techniques and for **ma
 ## Prerequisites  
 
 - **Python 3.7+**  
-- **MinGW Compiler**  
+- **w64devkit**  
 
-### Installation Options  
+### w64devkit Installation Options  
 
-#### 🔹 Option 1: w64devkit  
+#### 🔹 Option 1: Source  
 Download and install from:  
 [GitHub Releases](https://github.com/skeeto/w64devkit/releases)  
 
