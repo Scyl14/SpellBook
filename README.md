@@ -53,7 +53,7 @@ python3 main.py
 ## ⚠️ Important Note  
 
 To avoid interference from Windows Defender during the build process, you should either:  
-- Disable **Real-Time Protection**  
+- Disable **Real-Time Protection** until the build ends 
 - **Whitelist the project folder** in Windows Defender  
 
 ## 🚀 TODO  
