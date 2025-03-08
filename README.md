@@ -1,69 +1,64 @@
-# SpellBook
+# SpellBook  
 
-SpellBook is a versatile and modular framework for building loaders, designed to support a wide range of payload injection techniques and encryption methods. It offers a collection of spells (modules), primarily sourced from Maldev Academy ❤️, which can be utilized to create custom loaders.
-These loaders are ideal for both experimenting with various techniques and for malware reverse engineering training purposes. 
-The framework is developed in C++ and Python, ensuring flexibility and ease of extensibility.
+SpellBook is a modular and versatile framework for building loaders, designed to support various payload injection techniques and encryption methods. It features a collection of **spells** (modules), primarily sourced from [Maldev Academy](https://maldevacademy.com) ❤️, which can be leveraged to craft custom loaders.  
 
-### Prerequisites
+This framework is ideal for experimenting with different techniques and for **malware reverse engineering training**. Developed in **C++ and Python**, SpellBook offers both flexibility and ease of extensibility.  
 
-- Python 3.7+
-- Compiler MinGW
+## Prerequisites  
 
-    Release:
+- **Python 3.7+**  
+- **MinGW Compiler**  
 
-    https://github.com/skeeto/w64devkit/releases
-    
-    OR
+### Installation Options  
 
-    Chocolatey:
+#### 🔹 Option 1: w64devkit  
+Download and install from:  
+[GitHub Releases](https://github.com/skeeto/w64devkit/releases)  
 
-    Poweshell (Admin):
-
+#### 🔹 Option 2: Chocolatey  
+1. Open **PowerShell as Administrator** and run:  
     ```powershell
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-ObjectSystem.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     ```
-
-    Then:
-
+2. Then install MinGW with:  
     ```sh
     choco install mingw
     ```
-    
-    OR
 
-    Install MSYS2:
-
-    https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
-    
-    Then in MSYS2:
-
+#### 🔹 Option 3: MSYS2  
+1. Download and install **MSYS2** from:  
+   [MSYS2 Releases](https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe)  
+2. Open **MSYS2** and run:  
     ```sh
     pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
     ```
 
-- Windows OS (for Windows-specific APIs)
+- **Windows OS** (required for Windows-specific APIs)  
 
-### Installation
+## Installation  
 
-1. Clone the repository:
-
+1. Clone the repository:  
     ```sh
     git clone https://github.com/Scyl14/SpellBook.git
     cd SpellBook
     ```
-### Usage
 
-```sh 
+## Usage  
+
+Run SpellBook with:  
+```sh
 python3 main.py
 ```
-### NOTE
 
-Defender real time protecion should be turned off during the building process.
-Or the project folder should be whitelisted
+## ⚠️ Important Note  
 
-### TODO
+To avoid interference from Windows Defender during the build process, you should either:  
+- Disable **Real-Time Protection**  
+- **Whitelist the project folder** in Windows Defender  
 
-- Do some string/url ofuscation
-- New GUI work in progress
-- Reimplement encryption algorythm in python 
-- Add new techniques
+## 🚀 TODO  
+
+- Implement **string/URL obfuscation**  
+- Develop a **new GUI** (work in progress)  
+- Reimplement the **encryption algorithm in Python**  
+- Add **new techniques**  
