@@ -47,6 +47,14 @@ extern fnWriteProcessMemory pWriteProcessMemory = (fnWriteProcessMemory)GetProcA
 typedef HANDLE (WINAPI* fnOpenProcess)(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
 extern fnOpenProcess pOpenProcess = (fnOpenProcess)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "OpenProcess");
 
-//OpenProcess
+//QueueUserAPC
 typedef DWORD (WINAPI* fnQueueUserAPC)(PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData);
 extern fnQueueUserAPC pQueueUserAPC = (fnQueueUserAPC)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "QueueUserAPC");
+
+//CreateFileMappingW
+typedef DWORD  (WINAPI* fnCreateFileMappingW)(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect, DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCWSTR lpName);
+extern fnCreateFileMappingW pCreateFileMappingW = (fnCreateFileMappingW)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "CreateFileMappingW");
+
+//MapViewOfFile
+typedef DWORD  (WINAPI* fnMapViewOfFile)(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect, DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCWSTR lpName);
+extern fnMapViewOfFile pMapViewOfFile = (fnMapViewOfFile)GetProcAddress(GetModuleHandleA("KERNEL32.DLL"), "MapViewOfFile");

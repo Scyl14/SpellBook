@@ -53,6 +53,7 @@ def set_local_loader_type():
     1. Local Injection
     2. Local Thread Hijacking (Dummy Function)
     3. Local APC Injection
+    4. Local Mapping Injection
 
     >> """)
     if Loader == "1":
@@ -61,6 +62,8 @@ def set_local_loader_type():
         Loader = "LocalExecutionSpells/LocalThreadHijacking.h"
     if Loader == "3":
         Loader = "LocalExecutionSpells/LocalApcInjection.h"
+    if Loader == "4":
+        Loader = "LocalExecutionSpells/LocalMappingInjection.h"
     return Loader
 
 def set_remote_loader_type():

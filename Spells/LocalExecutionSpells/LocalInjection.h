@@ -33,6 +33,5 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN 
 	if (phThread)
 		*phThread = hThread;
 
-	WaitForSingleObject(hThread, INFINITE);
 	return TRUE;
 }

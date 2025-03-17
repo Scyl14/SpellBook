@@ -14,3 +14,5 @@ extern decltype(ResumeThread)* pResumeThread = ResumeThread;
 extern decltype(WriteProcessMemory)* pWriteProcessMemory = WriteProcessMemory;
 extern decltype(OpenProcess)* pOpenProcess = OpenProcess;
 extern decltype(QueueUserAPC)* pQueueUserAPC = QueueUserAPC;
+extern decltype(CreateFileMappingW)* pCreateFileMappingW = CreateFileMappingW;
+extern decltype(MapViewOfFile)* pMapViewOfFile = MapViewOfFile;

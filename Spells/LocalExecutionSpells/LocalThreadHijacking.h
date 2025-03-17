@@ -58,7 +58,8 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN 
         return FALSE;
     }
 
-	// Just for testing purposes (TO REMOVE)
-	WaitForSingleObject(hThread, INFINITE);
+	if (phThread)
+		*phThread = hThread;
+
 	return TRUE;
 }

