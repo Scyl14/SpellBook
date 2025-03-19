@@ -51,6 +51,12 @@ int main()
     HANDLE hThread;
     HANDLE* phThread = &hThread;
 
+    HANDLE hSemaphore = CreateSemaphoreA(NULL, 10, 10, "ControlString");
+
+    if (hSemaphore != NULL && GetLastError() == ERROR_ALREADY_EXISTS)
+	    exit(0);
+
+	// Payload is not running
     hThread = GetCurrentThread();
     """)
 
