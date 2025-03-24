@@ -6,11 +6,9 @@ def local_payload_fetch():
     >> """)
     with open(path, "rb") as file:
         content = file.read()
-        payload = "unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), content)) + "};"
-        return payload
+        return content
 
 def remote_payload_fetch(url):
     response = requests.get(url)
     content = response.content
-    payload = "unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), content)) + "};"
-    return payload
+    return content

