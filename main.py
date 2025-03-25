@@ -32,7 +32,7 @@ def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
     f.write(f"""\n
 #include "../Spells/{Loader}"
 """)
-    if Payload != "null":
+    if Payload != "null" :
         Payload_Str = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
         f.write(f"""\n
 {Payload_Str} 
