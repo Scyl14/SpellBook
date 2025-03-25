@@ -105,5 +105,4 @@ int main()
 def read_encrypted_payload():
     with open("encrypted.bin", "rb") as file:
         content = file.read()
-        payload = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), content)) + "};"
-        return payload
+        return content

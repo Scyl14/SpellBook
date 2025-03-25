@@ -6,7 +6,7 @@ def local_payload_fetch():
     >> """)
     with open(path, "rb") as file:
         content = file.read()
-        return content
+    return content
 
 def remote_payload_fetch(url):
     response = requests.get(url)

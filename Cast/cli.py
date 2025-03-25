@@ -29,6 +29,8 @@ def set_payload_encryption():
         PayloadEncryption = "RC4.h"
     elif PayloadEncryption == "3":
         PayloadEncryption = "AESEnc.h"
+    elif PayloadEncryption == "4":
+        PayloadEncryption = "null"
 
     return PayloadEncryption
 

