@@ -33,7 +33,7 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess, IN HANDLE hThread, IN PBYTE pP
 	}
 
     
-    if (CheckRemoteDebuggerPresent(hProcess, &bDebuggerPresent)) {
+    if (CheckRemoteDebuggerPresent(hProcess, &bDebuggerPresent) && bDebuggerPresent) {
         if (!DebugActiveProcessStop(GetProcessId(hProcess))) {
             printf("[!] DebugActiveProcessStop Failed With Error: %d \n", GetLastError());
             return FALSE;

@@ -48,7 +48,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                 SendMessage(hProgressBar, PBM_STEPIT, 0, 0);
             } else {
                 KillTimer(hwnd, timerId);
-                MessageBox(hwnd, "Download completato!", "Installer", MB_OK | MB_ICONINFORMATION);
+                MessageBox(hwnd, "Download completed!", "Installer", MB_OK | MB_ICONINFORMATION);
                 DestroyWindow(hwnd);
             }
             break;
@@ -64,9 +64,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 }
 
 void FakeDownload() {
+
     // Mostra una finestra iniziale per chiedere all'utente di cliccare "Continua"
     if(!IsUserAnAdmin()){
-    int response = MessageBox(NULL, "Clicca 'Continua' per iniziare il download.", "Avvio Download", MB_OKCANCEL | MB_ICONQUESTION);
+    int response = MessageBox(NULL, "Click 'OK' to start Download.", "Installer", MB_OKCANCEL | MB_ICONQUESTION);
     if (response == IDCANCEL) {
         return; // L'utente ha annullato l'operazione
     }
