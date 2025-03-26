@@ -93,11 +93,7 @@ int main()
     
     f.close()
     subprocess.run(f"g++ --static -g -w -o Cast\\encryptor Cast\\encryptor.cpp Cast\\TinyAES.c ")
-    result = subprocess.run(["Cast\\encryptor.exe"])
-    if result.returncode != 0:
-        print("Error: encryptor.exe did not execute successfully.")
-        #os.remove("Cast\\encryptor.cpp")
-        #os.remove("Cast\\encryptor.exe")
+    subprocess.run(["Cast\\encryptor.exe"])
     os.remove("Cast\\encryptor.cpp")
     os.remove("Cast\\encryptor.exe")
     return

