@@ -4,16 +4,18 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 
 ColumnLayout {
-    spacing: 10
 
     ColumnLayout {
         ColumnLayout {
+
             Text {
+                font.pointSize: 15
                 text: "Payload location"
             }
 
             RadioButton {
-                text: "URL"        
+                text: "URL"
+                checked: true        
                 onClicked: {
                     payload_url_form.visible = true
                     payload_path_form.visible = false
@@ -26,18 +28,22 @@ ColumnLayout {
                 onClicked: {
                     payload_url_form.visible = false
                     payload_path_form.visible = true
+                    payload_url.text = ""
                 }
             }
         }
 
         ColumnLayout {
             id: payload_url_form
-            visible: false
+            visible: true
             Text {
+                font.pointSize: 12
                 text: "Payload URL"
             }
             TextField {
                 id: payload_url
+                implicitWidth: 400
+                text: "http://localhost"
             }
         }
 
@@ -45,11 +51,13 @@ ColumnLayout {
             id: payload_path_form
             visible: false
             Text {
+                font.pointSize: 12
                 text: "Payload path"
             }
 
             Text {
                 id: payload_path
+                font.pointSize: 10
                 text: ""
             }
 

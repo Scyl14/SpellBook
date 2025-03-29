@@ -6,8 +6,8 @@ import spellbook
 
 Window {
     id: window
-    minimumWidth:300
-    minimumHeight: 350
+    minimumWidth:600
+    minimumHeight: 800
     visible: true
     title: "Test"
 
@@ -21,6 +21,14 @@ Window {
             spacing: 10
 
             PayloadLocation { }
+
+            MenuSeparator { }
+
+            EncryptionType { }
+
+            MenuSeparator { }
+
+            LoaderType { }
 
             RowLayout {
                 Button {

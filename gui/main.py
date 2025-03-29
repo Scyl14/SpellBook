@@ -17,7 +17,8 @@ class Bridge(QObject):
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
-    QQuickStyle.setStyle("Material")
+    # QQuickStyle.setStyle("Material")
+    QQuickStyle.setStyle("Universal")
     engine.addImportPath(sys.path[0])
     engine.loadFromModule("SpellBook", "Main")
     if not engine.rootObjects():

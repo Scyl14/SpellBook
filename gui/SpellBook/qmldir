@@ -1,3 +1,5 @@
 module SpellBook
-Main 254.0 main.qml
+Main 1.0 main.qml
 PayloadLocation 1.0 PayloadLocation.qml
+EncryptionType 1.0 EncryptionType.qml
+LoaderType 1.0 LoaderType.qml
