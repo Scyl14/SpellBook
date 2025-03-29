@@ -1,0 +1,3 @@
+module SpellBook
+Main 254.0 main.qml
+PayloadLocation 1.0 PayloadLocation.qml
