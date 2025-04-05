@@ -85,6 +85,7 @@ def set_remote_loader_type():
     1. Remote Process Injection - (CreateRemoteThread)
     2. Remote Thread Hijacking
     3. Early Bird APC Injection 
+    4. Remote Mapping Injection
                        
     >> """)
     if Loader == "1":
@@ -93,6 +94,8 @@ def set_remote_loader_type():
         Loader = "RemoteExecutionSpells/RemoteThreadHijacking.h"
     if Loader == "3":
         Loader = "RemoteExecutionSpells/EarlyBirdApcInjection.h"
+    if Loader == "4":
+        Loader = "RemoteExecutionSpells/RemoteMappingInjection.h"
     return Loader
 
 
@@ -136,12 +139,18 @@ def set_proc_creation_type():
     Enumeration = input("""\nEnter Process Creation Type:
     1. Create Suspended Process
     2. Create Debugged Process
+    3. Create Suspended (spoofed)
+    4. Create Debugged (spoofed)
 
     >> """)
     if Enumeration == "1":
         Enumeration = "CreationSpells/CreateSuspended.h"
     if Enumeration == "2":
         Enumeration = "CreationSpells/CreateDebugged.h"
+    if Enumeration == "3":
+        Enumeration = "CreationSpells/CreateSuspendedSpoofed.h"
+    if Enumeration == "4":
+        Enumeration = "CreationSpells/CreateDebuggedSpoofed.h"
     return Enumeration
 
 def set_api_mode():

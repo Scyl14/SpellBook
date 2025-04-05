@@ -1,0 +1,9 @@
+{
+    "Payload_Path": "1",
+    "Url": "null",
+    "Encryption": "AESEnc.h",
+    "Enumeration": "null",
+    "ProcessName": "null",
+    "Loader": "LocalExecutionSpells/LocalApcInjection.h",
+    "Decoy": "null"
+}
