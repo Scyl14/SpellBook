@@ -1,3 +1,5 @@
+**/__pycache__/
 .vscode/*
 .vs/*
-.Cast/_pycache_/*
+Build/*
+!Build/*.jpg
