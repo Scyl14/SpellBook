@@ -4,6 +4,7 @@ import json
 from Cast.cli import *
 from Cast.local_load import *
 from Cast.encryptor import *
+from Cast.random_spells import *
 
 def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
     f = open (f"{build_folder}\\main.cpp", "a")
@@ -247,11 +248,11 @@ def main():
     if Path == "":
         Path = ".\\Build"
     
-    Name = input(f"""\nFinaly the spell name (Default FireBall.exe):
+    Name = input(f"""\nFinaly the spell name (Default Random Spell Name):
     
     >> """)
     if Name == "":
-        Name = "FireBall"
+        Name = spell_name()
 
     timestamp = time.strftime("%Y%m%d_%H%M%S")
     build_folder = os.path.join(Path, timestamp)
