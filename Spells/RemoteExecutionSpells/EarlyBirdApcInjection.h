@@ -1,5 +1,5 @@
 # pragma once
-#include "../UtilitySpells/ApiCtHash.h"
+#include "api.h"
 #include <stdio.h>
 #include <Windows.h>
 

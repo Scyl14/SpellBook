@@ -7,7 +7,7 @@
 #include <stdio.h>
 //#include "../EnumerationSpells/ProcessEnumNtQuerySysInfo.h"
 #include "../UtilitySpells/Structs.h"
-#include "../UtilitySpells/ApiCtHash.h"
+#include "api.h"
 
 typedef NTSTATUS (NTAPI* fnNtQuerySystemInformation)(SYSTEM_INFORMATION_CLASS SystemInformationClass, PVOID SystemInformation, ULONG SystemInformationLength, PULONG ReturnLength);
 

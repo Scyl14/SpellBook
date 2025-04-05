@@ -204,14 +204,6 @@ def main():
         Url = "null"
     
     Encryption = set_payload_encryption()
-    if Encryption != "null":
-        build_encryptor(Encryption, Payload)
-        if Payload_Location == "1":
-            Payload = read_encrypted_payload()
-        elif Payload_Location == "2":
-            Payload = "null"
-            print("\n[!!]NOTE[!!]\nEncrypted Payload is saved as encrypted.bin")
-            print(f"Please host the encrypted.bin at {Url}")
     # else:
     #     Payload_Plain = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
     #     Payload = Payload_Plain
@@ -263,6 +255,21 @@ def main():
 
     ╰( ⁰ ਊ ⁰ )━━☆ﾟ.*･｡ﾟ \n""")
 
+    if not os.path.exists(build_folder):
+        os.makedirs(build_folder)
+
+    if Encryption != "null":
+        build_encryptor(Encryption, Payload, build_folder)
+        if Payload_Location == "1":
+            Payload = read_encrypted_payload(build_folder)
+        elif Payload_Location == "2":
+            Payload = "null"
+            print(f"""
+\n[!!]NOTE[!!]
+Encrypted Payload is saved as encrypted.bin
+Please host the encrypted.bin at {Url}
+[!!]NOTE[!!]\n""")
+
     if not build_template(build_folder, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
         print(f"\n[+] Template saved at {build_folder}")
     else:
@@ -278,7 +285,7 @@ def main():
     
     restore_header_file(Enumeration, Loader, ApiMode)
     if Payload_Location == "1":
-        os.remove("encrypted.bin")
+        os.remove(f"{build_folder}\\encrypted.bin")
 
 
 if __name__ == "__main__":

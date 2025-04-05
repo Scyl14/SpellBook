@@ -30,10 +30,11 @@ def get_keyguard():
     KeyGuard = OriginalKey, ProtectedKey, HintByte
     return KeyGuard
 
-def build_encryptor (Encryption, Payload):
+def build_encryptor (Encryption, Payload, build_folder):
 
     Payload_Str = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
-
+    build_folder = build_folder.replace("\\", "/")
+    print(f"\n[+] Building at {build_folder}\n")
     f = open ("Cast\\encryptor.cpp", "a")
     f.write(f"""
 #include <iostream>
@@ -47,7 +48,7 @@ def build_encryptor (Encryption, Payload):
 VOID create_ecrypted_binary_file(PBYTE pPayloadAddress, SIZE_T pPayloadSize)
 {{
     FILE *file;
-    file = fopen("encrypted.bin", "wb");
+    file = fopen("{build_folder}/encrypted.bin", "wb");
     fwrite(pPayloadAddress, pPayloadSize, 1, file);
     fclose(file);
 }}
@@ -69,7 +70,7 @@ int main()
     }}
     memcpy(pPayloadAddress, Data_RawData, pPayloadSize);
     
-    printf("Payload Size: %d\\n", pPayloadSize);
+    printf("\\n[+] Payload Size: %d\\n", pPayloadSize);
 
     //SIZE_T payloadSize = (SIZE_T)pPayloadSize;
     PaddBuffer(pPayloadAddress, pPayloadSize, &pPayloadAddress, &pPayloadSize);
@@ -98,7 +99,7 @@ int main()
     os.remove("Cast\\encryptor.exe")
     return
 
-def read_encrypted_payload():
-    with open("encrypted.bin", "rb") as file:
+def read_encrypted_payload(build_folder):
+    with open(f"{build_folder}\\encrypted.bin", "rb") as file:
         content = file.read()
         return content
