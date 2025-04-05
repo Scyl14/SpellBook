@@ -1,5 +1,3 @@
 .vscode/*
 .vs/*
-*_pycache_/*
-*gui.py
-*local_payload_fetch.py
+.Cast/_pycache_/*
