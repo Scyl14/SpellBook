@@ -2,7 +2,7 @@ import os
 import time
 from Cast.encryptor import *
 
-def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy):
+def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String):
     f = open (f"{build_folder}\\main.cpp", "a")
     f.write(f"""
 #include <iostream>
@@ -59,7 +59,7 @@ int main()
 """)
 
     f.write(f"""\n
-    HANDLE hSemaphore = CreateSemaphoreA(NULL, 10, 10, "ControlString");
+    HANDLE hSemaphore = CreateSemaphoreA(NULL, 10, 10, "{Control_String}");
 
     if (hSemaphore != NULL && GetLastError() == ERROR_ALREADY_EXISTS)
 	    exit(0);
