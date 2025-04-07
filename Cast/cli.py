@@ -85,7 +85,7 @@ def set_remote_loader_type():
     1. Remote Process Injection - (CreateRemoteThread)
     2. Remote Thread Hijacking
     3. Early Bird APC Injection 
-    4. Remote Mapping Injection
+    [!!] 4. Remote Mapping Injection (Not working with mingw (╯°□°）╯︵ ┻━┻)
                        
     >> """)
     if Loader == "1":
@@ -139,8 +139,8 @@ def set_proc_creation_type():
     Enumeration = input("""\nEnter Process Creation Type:
     1. Create Suspended Process
     2. Create Debugged Process
-    3. Create Suspended (spoofed)
-    4. Create Debugged (spoofed)
+    3. Create Suspended (spoofing explorer.exe)
+    4. Create Debugged (spoofing explorer.exe)
 
     >> """)
     if Enumeration == "1":
