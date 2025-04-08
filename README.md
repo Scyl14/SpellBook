@@ -1,3 +1,25 @@
+```
+                                     )
+                            )      ((     (
+                           (        ))     )
+                    )       )      //     (
+               _   (        __    (     ~->>
+        ,-----' |__,_~~___<'__`)-~__--__-~->> <
+        | //  : | -__   ~__ o)____)),__ - '> >-  >
+        | //  : |- \_ \ -\_\ -\ \ \ ~\_  \ ->> - ,  >>
+        | //  : |_~_\ -\__\ \~'\ \ \, \__ . -<-  >>
+        `-----._| `  -__`-- - ~~ -- ` --~> >
+         _/___\_    //)_`//  | ||]
+   _____[_______]_[~~-_ (.L_/  ||
+  [____________________]' `\_,/'/
+    ||| /          |||  ,___,'./
+    ||| \          |||,'______|
+    ||| /          /|| I==||
+    ||| \       __/_||  __||__
+-----||-/------`-._/||-o--o---o---
+  ~~~~~'
+```
+
 # SpellBook  
 
 SpellBook is a modular and versatile framework for building loaders, designed to support various payload injection techniques and encryption methods. It features a collection of **spells** (modules), primarily sourced from [Maldev Academy](https://maldevacademy.com) ❤️, which can be leveraged to craft custom loaders.  
@@ -55,10 +77,3 @@ python3 main.py
 To avoid interference from Windows Defender during the build process, you should either:  
 - Disable **Real-Time Protection** until the build ends 
 - **Whitelist the project folder** in Windows Defender  
-
-## 🚀 TODO  
-
-- Implement **string/URL obfuscation**  
-- Develop a **new GUI** (work in progress)  
-- Reimplement the **encryption algorithm in Python**  
-- Add **new techniques**  
