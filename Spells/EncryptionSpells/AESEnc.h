@@ -25,6 +25,7 @@ BOOL Encrypt(IN PBYTE pRawDataBuffer, IN SIZE_T sRawBufferSize, IN PBYTE pAesKey
 
         if (!pNewBuffer) {
             printf("[!] HeapAlloc Failed With Error: %d \n", GetLastError());
+            fflush(stdout);
             return FALSE;
         }
 

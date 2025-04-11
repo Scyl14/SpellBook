@@ -23,16 +23,19 @@ BOOL FetchFileFromURLA(IN LPCSTR cFileDownloadUrl, OUT PBYTE* ppFileBuffer, OUT 
 
 	if (!(hInternet = InternetOpenA(NULL, 0x00, NULL, NULL, 0x00))) {
 		printf("[!] InternetOpenA Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		goto _END_OF_FUNC;
 	}
 
 	if (!(hInternetFile = InternetOpenUrlA(hInternet, cFileDownloadUrl, NULL, 0x00, INTERNET_FLAG_HYPERLINK | INTERNET_FLAG_IGNORE_CERT_DATE_INVALID, 0x00))) {
 		printf("[!] InternetOpenUrlA Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		goto _END_OF_FUNC;
 	}
 
 	if (!(pTmpPntr = (PBYTE)LocalAlloc(LPTR, 1024))) {
 		printf("[!] LocalAlloc Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		goto _END_OF_FUNC;
 	}
 
@@ -41,6 +44,7 @@ BOOL FetchFileFromURLA(IN LPCSTR cFileDownloadUrl, OUT PBYTE* ppFileBuffer, OUT 
 
 		if (!InternetReadFile(hInternetFile, pTmpPntr, 1024, &dwTmpBytesRead)) {
 			printf("[!] InternetReadFile Failed With Error: %d \n", GetLastError());
+			fflush(stdout);
 			goto _END_OF_FUNC;
 		}
 
@@ -53,6 +57,7 @@ BOOL FetchFileFromURLA(IN LPCSTR cFileDownloadUrl, OUT PBYTE* ppFileBuffer, OUT 
 
 		if (!pFileBuffer) {
 			printf("[!] LocalAlloc/LocalReAlloc [%d] Failed With Error: %d \n", __LINE__, GetLastError());
+			fflush(stdout);
 			goto _END_OF_FUNC;
 		}
 
@@ -68,9 +73,9 @@ BOOL FetchFileFromURLA(IN LPCSTR cFileDownloadUrl, OUT PBYTE* ppFileBuffer, OUT 
 
 _END_OF_FUNC:
 	if (pTmpPntr)
-		LocalFree(pTmpPntr);
+	 	LocalFree(pTmpPntr);
 	if ((!*ppFileBuffer || !*pdwFileSize) && pFileBuffer)
-		LocalFree(pFileBuffer);
+	 	LocalFree(pFileBuffer);
 	if (hInternetFile)
 		InternetCloseHandle(hInternetFile);
 	if (hInternet)

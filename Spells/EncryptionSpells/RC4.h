@@ -81,6 +81,7 @@ PBYTE Encrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE p
 
 	if (!(pOtptBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sShellcodeSize))) {
 		printf("[!] HeapAlloc Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		return NULL;
 	}
 
@@ -101,6 +102,7 @@ PBYTE Decrypt(IN PBYTE pShellcode, IN SIZE_T sShellcodeSize, IN OPTIONAL PBYTE p
 
 	if (!(pOtptBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sShellcodeSize))) {
 		printf("[!] HeapAlloc Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		return NULL;
 	}
 

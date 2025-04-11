@@ -62,6 +62,16 @@ def build_template(Path, Url, Encryption, Enumeration, ProcessName, Loader, Deco
         json.dump(data, file, indent=4)
 
 def build_main(Payload_Location, Url, Encryption, Enumeration, Payload, ProcessName, Loader, Decoy, ApiMode, xor_key):
+
+    Debug_Mode = input(f"""\nDo you want to enable debug mode? (This will print console error ) (Default No) (Y/N):
+                       
+    >> """)
+
+    if Debug_Mode.lower() == "y":
+        Debug_Mode = True
+    else:
+        Debug_Mode = False
+
     Path = input(f"""\nPath for the final build (Default .\\Build):
 
     >> """)
@@ -107,7 +117,7 @@ Please host the encrypted.bin at the URL you provided.
     
     Control_String = random.randint(100000, 999999)
 
-    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String, xor_key):
+    if not build(Path, build_folder, Encryption, Enumeration, Payload, ProcessName, Loader, Url, Decoy, Control_String, xor_key, Debug_Mode):
         print(f"""
 [+] Loader Built Successfully! At {build_folder}
     
@@ -128,6 +138,7 @@ def main():
         xor_key = calculate_xor_key()
     else:
         Payload = local_payload_fetch()
+        xor_key = "null"
         Url = "null"
     
     Template = input(f"""\nDo you want to use a template? (Default No) (Y/N):

