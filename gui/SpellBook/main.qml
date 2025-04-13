@@ -15,29 +15,39 @@ Window {
         id: bridge
     }
 
-    Column {
-        padding: 10
-        ColumnLayout {
-            spacing: 10
+    ScrollView {
+        ScrollBar.vertical.interactive: true
+        width:600
+        height: 800
 
-            PayloadLocation { }
+        Column {
+            padding: 10
+            ColumnLayout {
+                spacing: 10
 
-            MenuSeparator { }
+                PayloadLocation { }
 
-            EncryptionType { }
+                MenuSeparator { }
 
-            MenuSeparator { }
+                EncryptionType { }
 
-            LoaderType { }
+                MenuSeparator { }
 
-            RowLayout {
-                Button {
-                    text: "Next"
-                    onClicked:  bridge.validateInput(payload_location.text)
-                }
+                LoaderType { }
 
-                Button {
-                    text: "Previous"
+                MenuSeparator { }
+
+                APIHashing { }
+
+                MenuSeparator { }
+
+                DecoyFunction { }
+
+                RowLayout {
+                    Button {
+                        text: "Cast"
+                        onClicked:  bridge.validateInput(payload_location.text)
+                    }
                 }
             }
         }

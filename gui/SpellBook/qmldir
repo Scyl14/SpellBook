@@ -3,3 +3,10 @@ Main 1.0 main.qml
 PayloadLocation 1.0 PayloadLocation.qml
 EncryptionType 1.0 EncryptionType.qml
 LoaderType 1.0 LoaderType.qml
+LocalInjection 1.0 LocalInjection.qml
+RemoteProcessInjection 1.0 RemoteProcessInjection.qml
+ProcessHandle 1.0 ProcessHandle.qml
+EnumerationType 1.0 EnumerationType.qml
+ProcessCreationType 1.0 ProcessCreationType.qml
+APIHashing 1.0 APIHashing.qml
+DecoyFunction 1.0 DecoyFunction.qml
