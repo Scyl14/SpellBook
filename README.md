@@ -1,7 +1,7 @@
 # SpellBook  
 
-![image](https://github.com/user-attachments/assets/fb1edc3e-501f-436f-8e6a-8d85cc127ac6)
 
+![text-1746042739592](https://github.com/user-attachments/assets/2087e398-74fe-447e-b7c8-fe261b8fa804)
 
 SpellBook is a modular and versatile framework for building loaders, designed to support various payload injection techniques and encryption methods. It features a collection of **spells** (modules), primarily sourced from [Maldev Academy](https://maldevacademy.com) ❤️, which can be leveraged to craft custom loaders.  
 
