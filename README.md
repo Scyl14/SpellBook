@@ -1,5 +1,8 @@
 # SpellBook  
 
+![image](https://github.com/user-attachments/assets/fb1edc3e-501f-436f-8e6a-8d85cc127ac6)
+
+
 SpellBook is a modular and versatile framework for building loaders, designed to support various payload injection techniques and encryption methods. It features a collection of **spells** (modules), primarily sourced from [Maldev Academy](https://maldevacademy.com) ❤️, which can be leveraged to craft custom loaders.  
 
 This framework is ideal for experimenting with different techniques and for **malware reverse engineering training**. Developed in **C++ and Python**, SpellBook offers both flexibility and ease of extensibility.  
